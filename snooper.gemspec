@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
     'http://github.com/iwillspeak/snooper'
   s.authors     = ["Will Speak"]
   s.email       = 'lithiumflame@gmail.com'
-  s.files       = ["lib/snooper.rb", "bin/snooper", "LICENCE.md"]
+  s.files       = ["lib/snooper.rb", "lib/snooper/snoop.rb",
+                   "bin/snooper", "LICENCE.md"]
   s.executables << 'snooper'
 end
