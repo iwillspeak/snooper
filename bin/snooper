@@ -1,0 +1,26 @@
+#! /usr/bin/env ruby
+
+require 'snooper'
+require 'colored'
+
+def test_loop(options)
+  begin
+    dirs = options[:dirs] ? options[:dirs] : './'
+    Snooper.watch dirs, options 
+  rescue Interrupt
+    puts # This is where the ^C is on unix
+    puts "Done".yellow
+  end
+end
+
+# TODO: load the options from the arguments
+options = {
+  :base_dir => ARGV.shift,
+  :command => (ARGV.shift or "echo 'no tests to run :-)'"),
+  :filters => %w{\.c \.h \.mk},
+  :exclude => %w{build/ bin/}
+}
+
+Dir.chdir options[:base_dir] if options[:base_dir]
+
+test_loop options
