@@ -14,4 +14,8 @@ Gem::Specification.new do |s|
   s.files       = ["lib/snooper.rb", "lib/snooper/snoop.rb",
                    "bin/snooper", "LICENCE.md"]
   s.executables << 'snooper'
+  
+  s.add_runtime_dependency "colored", [">= 1.2"]
+  s.add_runtime_dependency "listen", [">= 0.7"]
+  s.add_runtime_dependency "ruby-terminfo", [">= 0.1"]
 end
