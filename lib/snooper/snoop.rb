@@ -31,7 +31,7 @@ module Snooper
         if system @command then
           puts statusbar "All tests passed", &:white_on_green
         else
-          puts self.statusbar "Tests failed", &:white_on_red
+          puts statusbar "Tests failed", &:white_on_red
         end
         
         # return to listening
@@ -50,7 +50,7 @@ module Snooper
     def run
       
       # Force a change to start with
-      self.on_change [], [], []
+      on_change [], [], []
       
       callback_helper = Proc.new {|*args| self.on_change *args }
       
