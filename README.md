@@ -10,4 +10,4 @@ $ snooper <directory> <command>
 
 ##Licence
 
-Snooper is open source! For more information check out [the licence](LICENCE.md)
+Snooper is open source! For more information check out [the licence](LICENCE.md).
