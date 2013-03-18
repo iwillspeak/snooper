@@ -22,6 +22,8 @@ def test_loop(options)
   end
 end
 
+
+
 # TODO: load the options from the arguments
 options = {
   :base_dir => ARGV.shift,
@@ -30,6 +32,9 @@ options = {
   :exclude => %w{build/ bin/}
 }
 
+old_dir = Dir.expand_path '.'
 Dir.chdir options[:base_dir] if options[:base_dir]
 
 test_loop options
+
+Dir.chdir old_dir
