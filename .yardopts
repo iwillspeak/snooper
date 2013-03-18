@@ -1,0 +1,4 @@
+--asset man:man
+--readme README.md
+--files LICENCE.md
+lib/

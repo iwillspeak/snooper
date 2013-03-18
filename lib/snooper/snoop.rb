@@ -77,7 +77,6 @@ module Snooper
     # is post-filtered by it before being returned.
     #
     # @param message - the message to print
-    # @param &block - optional block to post-filter
     
     def statusbar(message)
       message = message.to_s.center TermInfo.screen_width
