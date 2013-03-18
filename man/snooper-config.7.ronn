@@ -41,3 +41,7 @@ String Array options
 ## SEE ALSO
 
 snooper(1)
+
+## AUTHORS
+
+Will Speak (@willspeak)

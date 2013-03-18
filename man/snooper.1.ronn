@@ -34,12 +34,16 @@ To run snooper in the current directory, configured by the `.snooper.yaml` file.
 
 `$ snooper --config snooperrc "echo Hello World!"`
 
-To snooper using the cofiguration in <snooperrc> executing `echo Hello World!`
+To snoop using the cofiguration in <snooperrc> executing `echo Hello World!`
 when files change.
 
 ## BUGS
 
-**Snooper** does not yet load the configuration file.
+Think you've found a bug? [Report it](http://github.com/iwillspeak/snooper/issues).
+
+## SEE ALSO
+
+snooper(1)
 
 ## AUTHORS
 
