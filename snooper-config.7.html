@@ -100,13 +100,22 @@ may also be given a single value.</p>
 
 <h2 id="OPTIONS">OPTIONS</h2>
 
+<p>String options</p>
+
 <dl>
-<dt><code>base_dir:</code> <var>directory</var></dt><dd><p>Specifies the <var>directory</var> that <code>snooper</code> should base all relative paths from.
+<dt><code>base_path:</code> <var>directory</var></dt><dd><p>Specifies the <var>directory</var> that <code>snooper</code> should base all relative paths from.
 This is also the working directory that commands will inherit.</p></dd>
+<dt><code>command:</code> <var>command_string</var></dt><dd><p>Specifies the command string to execute when a file change is detected.</p></dd>
+</dl>
+
+
+<p>String Array options</p>
+
+<dl>
 <dt><code>paths:</code> <var>directories</var></dt><dd><p>Specifies a list of <var>directories</var> to watch. Directories can be either
 relative or absolute paths. If no paths are specified the default is to
-watch <code>base_dir</code>.</p></dd>
-<dt><code>filters:</code> <var>filters</var>, <code>ignore:</code> <var>filters</var></dt><dd><p>Specifies a list of regular expressions <var>filters</var> to use to filter the
+watch <code>base_path</code>.</p></dd>
+<dt><code>filters:</code> <var>filters</var>, <code>ignored:</code> <var>filters</var></dt><dd><p>Specifies a list of regular expressions <var>filters</var> to use to filter the
 changes. These should be in a format understood by <span class="man-ref">ruby<span class="s">(1)</span></span>'s Regex.new
 method. If none are given then all changes in watched directories trigger
 testing.</p>
