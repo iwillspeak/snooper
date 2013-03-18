@@ -18,7 +18,7 @@ install using `gem`:
 ## Useage
 
 ```bash
-$ snooper <directory> <command>
+$ snooper <--config CONFIG | -h> <command>
 ```
 
 See [snooper(1)](snooper.1.html) for more information.
