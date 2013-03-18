@@ -1,7 +1,16 @@
 #! /usr/bin/env ruby
 
+# Author::    Will Speak  (@willspeak)
+# Copyright:: Copyright (c) 2013 Will Speak
+# License::   Snoop is open source! See LICENCE.md for more details.
+
 require 'snooper'
 require 'colored'
+
+##
+# Main program loop
+#
+# Do our stuff, and exit cleanly when interrupted.
 
 def test_loop(options)
   begin
