@@ -13,16 +13,23 @@ may also be given a single value.
 
 ## OPTIONS
 
- * `base_dir:` <directory>:
+String options
+ 
+ * `base_path:` <directory>:
    Specifies the <directory> that `snooper` should base all relative paths from.
    This is also the working directory that commands will inherit.
+   
+ * `command:` <command_string>:
+   Specifies the command string to execute when a file change is detected.
+
+String Array options
 
  * `paths:` <directories>:
    Specifies a list of <directories> to watch. Directories can be either 
    relative or absolute paths. If no paths are specified the default is to 
-   watch `base_dir`.
+   watch `base_path`.
 
- * `filters:` <filters>, `ignore:` <filters>:
+ * `filters:` <filters>, `ignored:` <filters>:
    Specifies a list of regular expressions <filters> to use to filter the
    changes. These should be in a format understood by ruby(1)'s Regex.new
    method. If none are given then all changes in watched directories trigger

@@ -6,6 +6,8 @@
 
 require 'snooper'
 require 'colored'
+require 'optparse'
+require 'yaml'
 
 ##
 # Main program loop
@@ -14,27 +16,111 @@ require 'colored'
 
 def test_loop(options)
   begin
-    dirs = options[:dirs] ? options[:dirs] : './'
+    dirs = options[:paths].empty? ? './' : options[:paths]
     Snooper.watch dirs, options 
   rescue Interrupt
     puts # This is where the ^C is on unix
-    puts "Done".yellow
+    puts "Testing over, time for a coffee...".yellow
   end
 end
 
+##
+# Parse the command line and load the options
+#
 
+def get_options
+  
+  helptext = <<END
 
-# TODO: load the options from the arguments
-options = {
-  :base_dir => ARGV.shift,
-  :command => (ARGV.shift or "echo 'no tests to run :-)'"),
-  :filters => %w{\.c \.h \.mk},
-  :exclude => %w{build/ bin/}
-}
+Snooper is  a lightweight test  automation tool,  it monitors files  and folders
+while  you work  and  re-runs  your tests  when  you  change something.  Snooper
+doesn't care what language you're using  or what framework you are testing with,
+it's all configureable.
 
-old_dir = Dir.expand_path '.'
-Dir.chdir options[:base_dir] if options[:base_dir]
+For more information see snooper(1).
+END
+  
+  config_path = '.snooper.yaml'
+  opts = OptionParser.new do |opts|
+    opts.banner =
+      "Useage: #{File.basename __FILE__} [--config <CONFIG> | --help] " + 
+      "[<COMMAND>]*"
 
+    opts.separator helptext
+
+    opts.on '-c', '--config CONFIGFILE', 'YAML configuration file' do |path|
+      config_path = path
+    end
+    
+    opts.on("-h", "--help", "Show this message") do
+      puts opts
+      exit
+    end
+  end
+  
+  # Parse the options
+  begin
+    opts.parse!
+  rescue OptionParser::InvalidOption, \
+         OptionParser::MissingArgument, \
+         OptionParser::InvalidArgument => e
+    puts e
+    puts opts
+    exit 1
+  end
+  
+  # Load the config file
+  begin
+    yamopts = YAML.load_file config_path
+  rescue Exception => e
+    puts "Error loading the config: #{e}"
+    exit 1
+  end
+  
+  if not yamopts.is_a? Hash
+    puts "Invalid options file"
+    exit 1
+  end
+  
+  # default options
+  options = {
+    :base_path => nil,
+    :command => nil,
+    :filters => [],
+    :ignored => [],
+    :paths => []
+  }
+  
+  yamopts.each do |option, argument|
+    case option
+      when 'base_path', 'command'
+        options[option.to_sym] = argument.to_s
+        
+      when 'paths', 'filters', 'ignored'
+        argument = argument.split if argument.is_a? String
+        options[option.to_sym] += Array(argument)
+        
+      else
+        puts "Ignoring unknown option #{option}".red
+    end
+  end
+  
+  if options[:base_path]
+    base = File.expand_path options[:base_path], File.dirname(config_path)
+    options[:paths].map! { |p| File.expand_path p, base }
+    options[:base_path] = base
+  end
+  
+  # Override the command if one was specified
+  options[:command] = ARGV.join " " if not ARGV.empty?
+  
+  options
+end
+
+options = get_options
+
+# Run the tests, pusing the target directory
+old_dir = File.expand_path '.'
+Dir.chdir options[:base_path] if options[:base_path]
 test_loop options
-
 Dir.chdir old_dir
