@@ -8,7 +8,7 @@ Snooper is a lightweight test automation tool, it monitors files and folders whi
 $ snooper <directory> <command>
 ```
 
-See [snooper(1)](man/snooper.1.html) for more information.
+See [snooper(1)](iwillspeak.github.com/snooper/snooper.1.html) for more information.
 
 ##Licence
 
