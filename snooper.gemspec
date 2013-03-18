@@ -20,4 +20,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "listen", [">= 0.7"]
   s.add_runtime_dependency "ruby-terminfo", [">= 0.1"]
   s.add_development_dependency "ronn", [">= 0.7.3"]
+  # Rdoc stuff
+  s.extra_rdoc_files = Dir.glob("{man}/*.ronn") + %w[LICENCE.md README.md]
+  s.rdoc_options     << '--main' << 'README.md'
 end
