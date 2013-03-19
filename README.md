@@ -20,8 +20,8 @@ String options: `base_path:`, `command:`
 
 String Array options: `paths:`, `filters:`, `ignored:`
    
-_Note_: `filters:` and `paths:` are regular expressions. This means that `\.c` 
-will match both `foo.c` and `bar.cfg`, `\.c$` will only match `.c` files.
+_Note_: `filters:` and `ignored:` are regular expressions. This means that
+`\.c` will match both `foo.c` and `bar.cfg`, `\.c$` will only match `.c` files.
 
 <script src="https://gist.github.com/iwillspeak/5191785.js"></script>
 
