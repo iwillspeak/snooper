@@ -43,7 +43,7 @@ Think you've found a bug? [Report it](http://github.com/iwillspeak/snooper/issue
 
 ## SEE ALSO
 
-snooper(1)
+snooper-config(7)
 
 ## AUTHORS
 
