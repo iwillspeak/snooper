@@ -6,8 +6,7 @@ Gem::Specification.new do |s|
   s.summary     = "Spying on Tests"
   s.description =
     "A simple language and test system agnostic continuous test runner."
-  s.license     =
-    "Snooper is Open Source! See the LICENCE.md for more information."
+  s.license     = ['MIT']
   s.homepage    =
     'http://github.com/iwillspeak/snooper'
   s.authors     = ["Will Speak"]
