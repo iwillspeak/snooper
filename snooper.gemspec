@@ -1,14 +1,16 @@
+$:.unshift File.expand_path('../lib/', __FILE__)
+
+require 'snooper/version'
+
 Gem::Specification.new do |s|
   s.name        = 'snooper'
-  s.version     = '0.1.0'
+  s.version     = Snooper::VERSION
   s.date        = Date.today
   s.platform    = Gem::Platform::RUBY
   s.summary     = "Spying on Tests"
-  s.description =
-    "A simple language and test system agnostic continuous test runner."
-  s.license     = ['MIT']
-  s.homepage    =
-    'http://github.com/iwillspeak/snooper'
+  s.description = "Snooper is a lightweight test automation tool, it monitors files and folders while you work and re-runs your tests when you change something. Snooper doesn't care what language you're using or what framework you are testing with, it's all configureable."
+  s.license     = 'MIT'
+  s.homepage    = 'http://github.com/iwillspeak/snooper'
   s.authors     = ["Will Speak"]
   s.email       = 'lithiumflame@gmail.com'
   # Gem contents
