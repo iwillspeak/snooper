@@ -56,9 +56,9 @@ module Snooper
         
         # run the test suite and check the result
         if system @command then
-          puts statusbar "All tests passed", &:white_on_green
+          puts statusbar "✓ All tests passed", &:white_on_green
         else
-          puts statusbar "Tests failed", &:white_on_red
+          puts statusbar "✗ Tests failed", &:white_on_red
         end
         
         # return to listening
