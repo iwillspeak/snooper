@@ -4,3 +4,4 @@ doc/*
 .yardoc/*
 man/*.1
 man/*.7
+_site/*
