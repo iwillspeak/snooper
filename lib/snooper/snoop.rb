@@ -36,6 +36,19 @@ module Snooper
     end
     
     ##
+    # Time Command
+    #
+    # Run a command and time how long it takes. The exit status of the command
+    # and the time taken to run the command are both returned.
+    
+    def time_command(command)
+      before = Time.new
+      result = system command
+      after = Time.new
+      return result, after - before
+    end
+    
+    ##
     # Change callback
     #
     # Called when a filesystem change is detected by +listen+. Runs the command
@@ -55,10 +68,11 @@ module Snooper
         puts "#{statusline} #{changes.length.to_s.magenta.bold} changes"
         
         # run the test suite and check the result
-        if system @command then
-          puts statusbar "✓ All tests passed", &:white_on_green
+        res, time = time_command @command
+        if res then
+          puts statusbar "✓ All tests passed (#{time}s)", &:white_on_green
         else
-          puts statusbar "✗ Tests failed", &:white_on_red
+          puts statusbar "✗ Tests failed (#{time}s)", &:white_on_red
         end
         
         # return to listening
