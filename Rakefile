@@ -23,3 +23,16 @@ task :docs do
   puts "Compiling manpages"
   `ronn --style=dark,toc man/*.ronn`
 end
+
+# Clean up : rake clean
+desc "Remove any built gems fom the directory, and any compiled docs"
+task :clean do
+  puts "removing built gems"
+  Dir.glob("*.gem").each do |f|
+    File.delete f
+  end
+  puts "removing documentation"
+  Dir.glob("man/*.{html,[0-9]}").each do |f|
+    File.delete f
+  end
+end
