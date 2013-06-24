@@ -26,7 +26,7 @@ module Snooper
     # [+:command+] [String] The command to run when changes are detected
     
     def initialize(path, args = {})
-      to_regex = Proc.new { |r| Regexp.new r if not r.is_a?(Regexp) }
+      to_regex = Proc.new { |r| r.is_a?(Regexp) ? r : Regexp.new(r) }
       
       @paths = Array(path)
       @filters = args[:filters]
