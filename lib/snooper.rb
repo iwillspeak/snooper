@@ -1,5 +1,5 @@
 ##
-# This program runs in the background watching for file changes. When a file 
+# This program runs in the background watching for file changes. When a file
 # change is dtected a command is run. It is intended to watch repos for changes
 # and run unit tests automatically when source files are changed.
 #
@@ -14,7 +14,7 @@
 module Snooper
   
   require 'snooper/snoop'
-  
+
   ##
   # Watch for changes in a directory
   #
