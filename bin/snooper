@@ -51,6 +51,11 @@ END
     opts.on '-c', '--config CONFIGFILE', 'YAML configuration file' do |path|
       config_path = path
     end
+
+    opts.on("--version", "show version information") do
+      puts "Snooper v#{Snooper::VERSION}"
+      exit
+    end
     
     opts.on("-h", "--help", "Show this message") do
       puts opts

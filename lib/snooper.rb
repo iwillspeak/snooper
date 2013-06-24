@@ -14,6 +14,7 @@
 module Snooper
   
   require 'snooper/snoop'
+  require 'snooper/version'
 
   ##
   # Watch for changes in a directory
