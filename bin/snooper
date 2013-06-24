@@ -17,7 +17,7 @@ require 'yaml'
 def test_loop(options)
   begin
     dirs = options[:paths].empty? ? './' : options[:paths]
-    Snooper.watch dirs, options 
+    Snooper.watch dirs, options
   rescue Interrupt
     puts # This is where the ^C is on unix
     puts "Testing over, time for a coffee...".yellow
@@ -93,15 +93,15 @@ END
   
   yamopts.each do |option, argument|
     case option
-      when 'base_path', 'command'
-        options[option.to_sym] = argument.to_s
-        
-      when 'paths', 'filters', 'ignored'
-        argument = argument.split if argument.is_a? String
-        options[option.to_sym] += Array(argument)
-        
-      else
-        puts "Ignoring unknown option #{option}".red
+    when 'base_path', 'command'
+      options[option.to_sym] = argument.to_s
+
+    when 'paths', 'filters', 'ignored'
+      argument = argument.split if argument.is_a? String
+      options[option.to_sym] += Array(argument)
+
+    else
+      puts "Ignoring unknown option #{option}".red
     end
   end
   
