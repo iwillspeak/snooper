@@ -6,7 +6,16 @@ require 'snooper/version'
 class TestVersion < Test::Unit::TestCase
   
   def test_version_string
-    assert_equal("0.1.2", Snooper::VERSION, "Version number mismatch")
+    version_string = Snooper::VERSION
+
+    # Version should be a sting containing three numbers
+    assert(version_string.is_a? String)
+    assert_equal(version_string.split(".").length, 3)
+
+    # Version numbers should be number-like
+    version_string.split(".").each do |s|
+      assert /^[0-9]+/.match s
+    end
   end
   
 end
