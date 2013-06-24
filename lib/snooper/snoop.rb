@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Author::    Will Speak  (@willspeak)
 # Copyright:: Copyright (c) 2013 Will Speak
 # License::   Snoop is open source! See LICENCE.md for more details.
@@ -86,14 +87,14 @@ module Snooper
     ##
     # Prettify a status line
     #
-    # Prints the message at the center of the line, automatically detected 
+    # Prints the message at the center of the line, automatically detected
     # from the terminal info. If a block is supplied then the resulting message
     # is post-filtered by it before being returned.
     #
     # @param message - the message to print
     
     def statusbar(message)
-      message = message.to_s.center TermInfo.screen_width
+      message = message.to_s.center TermInfo.screen_width - 1
       block_given? ? yield(message) : message
     end
     
