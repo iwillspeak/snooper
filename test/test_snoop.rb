@@ -51,6 +51,23 @@ class TestSnoop < Test::Unit::TestCase
 
   end
 
+  def test_hooks
+    options = {
+      :hooks => [ { "pattern" => "\.h", "command" => "make clean"} ],
+      :command => 'true'
+    }
+    
+    s = Snooper::Snoop.new WATCH_PATH, options
+
+    assert s != nil
+    h = s.instance_variable_get :@hooks
+    assert h
+    assert h.length == 1
+    h.each do |hook|
+      assert hook.is_a? Snooper::Hook
+    end
+  end
+
   def test_settings
 
     options = {

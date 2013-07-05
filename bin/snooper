@@ -93,7 +93,8 @@ END
     :command => nil,
     :filters => [],
     :ignored => [],
-    :paths => []
+    :paths => [],
+    :hooks => []
   }
   
   yamopts.each do |option, argument|
@@ -104,6 +105,11 @@ END
     when 'paths', 'filters', 'ignored'
       argument = argument.split if argument.is_a? String
       options[option.to_sym] += Array(argument)
+
+    when 'hooks'
+      argument.each do |hook|
+        options[:hooks] << hook
+      end
 
     else
       puts "Ignoring unknown option #{option}".red

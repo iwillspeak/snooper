@@ -3,6 +3,8 @@
 # Copyright:: Copyright (c) 2013 Will Speak
 # License::   Snoop is open source! See LICENCE.md for more details.
 
+require 'snooper/hook'
+
 module Snooper
   
   ##
@@ -26,7 +28,7 @@ module Snooper
     # [+:command+] [String] The command to run when changes are detected
     
     def initialize(path, args = {})
-      to_regex = Proc.new { |r| r.is_a?(Regexp) ? r : Regexp.new(r) }
+      to_regex = Proc.new { |r| Regexp.try_convert(r) || Regexp.new(r) }
       
       @paths = Array(path)
       @filters = args[:filters]
@@ -34,6 +36,20 @@ module Snooper
       @ignored = args[:ignored]
       @ignored = Array(@ignored).map(&to_regex) if @ignored
       @command = args[:command]
+      @hooks = create_hooks(args[:hooks])
+    end
+
+    ##
+    # Public : Create Hook Objects
+    #
+    # raw_hooks - The Array of maps. Each map should contain the pattern to
+    #             match and the command to run.
+    #
+    # Returns an Array of Hook
+    def create_hooks(raw_hooks)
+      raw_hooks.to_a.map do |hook|
+        Hook.new hook["pattern"], hook["command"]
+      end
     end
     
     ##
@@ -68,6 +84,10 @@ module Snooper
         statusline << ('+' * added.length).green
         puts "#{statusline} #{changes.length.to_s.magenta.bold} changes"
         
+        @hooks.each do |hook|
+          hook.run changes
+        end
+
         # run the test suite and check the result
         res, time = time_command @command
         if res then
@@ -94,7 +114,7 @@ module Snooper
     # @param message - the message to print
     
     def statusbar(message, time=nil)
-      message += " (#{time.round(3)}s)" if time
+      message << " (#{time.round(3)}s)" if time
       message = message.to_s.center TermInfo.screen_width - 1
       block_given? ? yield(message) : message
     end
