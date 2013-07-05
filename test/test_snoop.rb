@@ -28,6 +28,29 @@ class TestSnoop < Test::Unit::TestCase
     assert_equal "fizzle_snaps", @snoop.statusbar("basfdasdfa", &p)
   end
 
+  def test_statusbar_timings
+    
+    r =  @snoop.statusbar("foobar", 13.37)
+    assert r.include? "foobar"
+    assert r.include? "13.37"
+
+    r = @snoop.statusbar "hello world", 123456.789112
+    assert r.include? "hello world"
+    assert r.include? "123456.789"
+    assert !(r.include? "112") # make sure that it is rounded
+
+    r = @snoop.statusbar "foobar", 0.123312
+    assert r.include? "0.123"
+    assert !(r.include? "321")
+    
+    r = @snoop.statusbar "fsda", 3.3335
+    assert r.include? "3.334" # check rounding direction
+
+    r = @snoop.statusbar "h", 12.123
+    assert r.include? "12.123s"
+
+  end
+
   def test_settings
 
     options = {

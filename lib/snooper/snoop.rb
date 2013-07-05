@@ -57,7 +57,7 @@ module Snooper
     
     def on_change(modified, added, removed)
       begin
-        # Puase the listener to make sure any build output doesn't mess with things
+        # Puase the listener to avoid spurious triggers from build output
         @listener.pause if @listener
       
         # summarise the changes made
@@ -71,9 +71,9 @@ module Snooper
         # run the test suite and check the result
         res, time = time_command @command
         if res then
-          puts statusbar "✓ All tests passed (#{time}s)", &:white_on_green
+          puts statusbar "✓ All tests passed", time, &:white_on_green
         else
-          puts statusbar "✗ Tests failed (#{time}s)", &:white_on_red
+          puts statusbar "✗ Tests failed", time, &:white_on_red
         end
         
         # return to listening
@@ -93,7 +93,8 @@ module Snooper
     #
     # @param message - the message to print
     
-    def statusbar(message)
+    def statusbar(message, time=nil)
+      message += " (#{time.round(3)}s)" if time
       message = message.to_s.center TermInfo.screen_width - 1
       block_given? ? yield(message) : message
     end
