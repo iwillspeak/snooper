@@ -6,5 +6,5 @@ module Snooper
   # This should conform to SemVer. If this is changed it should be the only
   # thing that changes in the comit.
   
-  VERSION = '0.1.3'
+  VERSION = '1.0.0'
 end
