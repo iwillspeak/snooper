@@ -126,6 +126,31 @@ testing.</p>
 </dl>
 
 
+<p>Hooks</p>
+
+<p>Hooks are useful to pefrom special commads upon a subset of the file-change
+events. Each hook is run a single time if any of the filepaths that satisfy
+<code>filters:</code> and <code>ignored:</code> aslo match the <code>pattern:</code> of the filter.</p>
+
+<ul>
+<li><p><code>hooks:</code> <var>hook_list</var>
+ Specifies a list of hooks, where each hook represents a task that should
+ be carried out upon a subset of the triggering events. The hooks key should
+ contain a list of mappings. Each mappign should have the two following keys:</p>
+
+<ul>
+<li><p><code>pattern:</code> <var>regexp</var>
+The pattern to run the hook on. This should be of the same format as
+<code>filters:</code> and <code>ignored:</code>. Note that hooks can only match a subset of all
+file changes as controlled by <code>filters:</code> and <code>ignored:</code>.</p></li>
+<li><p><code>command:</code> <var>command_string</var>
+A command to be run when the hook is triggered. This is of the same format
+as the global <code>command:</code> key.</p></li>
+</ul>
+</li>
+</ul>
+
+
 <h2 id="SEE-ALSO">SEE ALSO</h2>
 
 <p><a class="man-ref" href="snooper.1.html">snooper<span class="s">(1)</span></a></p>
@@ -137,7 +162,7 @@ testing.</p>
 
   <ol class='man-decor man-foot man foot'>
     <li class='tl'></li>
-    <li class='tc'>June 2013</li>
+    <li class='tc'>July 2013</li>
     <li class='tr'>snooper-config(7)</li>
   </ol>
 
