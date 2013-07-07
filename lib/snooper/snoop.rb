@@ -153,7 +153,7 @@ module Snooper
         :ignore => @ignored)
       @listener.change &callback_helper
 
-      @listener.start
+      @listener.start!
     end
   end
 end

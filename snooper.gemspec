@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.executables << 'snooper'
   # Gem dependencies
   s.add_runtime_dependency "colored", [">= 1.2"]
-  s.add_runtime_dependency "listen", [">= 0.7"]
+  s.add_runtime_dependency "listen", [">= 1.2"]
   s.add_runtime_dependency "ruby-terminfo", [">= 0.1"]
   s.add_development_dependency "ronn", [">= 0.7.3"]
   # Rdoc stuff
