@@ -100,13 +100,7 @@ module Snooper
           hook.run changes
         end
 
-        # run the test suite and check the result
-        res, time = time_command @command
-        if res then
-          puts statusbar "✓ All tests passed", time, &:white_on_green
-        else
-          puts statusbar "✗ Tests failed", time, &:white_on_red
-        end
+        run_command
         
         # return to listening
         @listener.unpause if @listener
@@ -115,7 +109,22 @@ module Snooper
         puts e.backtrace
       end
     end
-  
+
+    ##
+    # Internal: Run command and print the result
+    #
+    # Return result of the command
+    def run_command
+      # run the test suite and check the result
+      res, time = time_command @command
+      if res then
+        puts statusbar "✓ All tests passed", time, &:white_on_green
+      else
+        puts statusbar "✗ Tests failed", time, &:white_on_red
+      end
+      res
+    end
+
     ##
     # Internal: Prettify a status line
     #
@@ -145,7 +154,7 @@ module Snooper
     def run
       
       # Force a change to start with
-      on_change [], [], []
+      run_command
       
       callback_helper = Proc.new {|*args| self.on_change *args }
       
