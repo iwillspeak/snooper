@@ -10,8 +10,8 @@
 # License::   Snoop is open source! See LICENCE.md for more details.
 #
 #
-# For most applications calling the +Snooper#watch+ method should be sufficient
-# if Snooper::Snoop objects can be created directly.
+# For most applications calling the Snooper#watch method should be sufficient
+# if not Snooper::Snoop objects can be created directly.
 module Snooper
   
   require 'snooper/snoop'
