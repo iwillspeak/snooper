@@ -8,7 +8,7 @@ require 'snooper/hook'
 module Snooper
   
   ##
-  # Watches over a directory, executing a comand when files change
+  # Public: Watches over a directory, executing a comand when files change
   #
   # The fine-grained behaviour of this class is controlled by the parameters
   # passed to the +new+ method.
@@ -19,14 +19,16 @@ module Snooper
     require 'terminfo'
     
     ##
-    # Create a new source code spy
+    # Public: Create a new source code spy
     #
-    # @param [String, Array] path - the path (or paths) to begin watching
-    # @param [Hash] args - the options hash
-    # [+:filters+] [Array,String,Regexp] Files to include, empty for all
-    # [+:ignored+] [Array,String,Regexp] Paths to ignore
-    # [+:command+] [String] The command to run when changes are detected
-    
+    # path - the String or  Array path (or paths) to begin watching
+    # args - the Hash of options
+    #        :filters - The Array, String or Regexp files to include, empty or
+    #                   to signify no filter.
+    #        :ignored - The Array, String or Regexp paths to ignore. As above.
+    #        :command - The String containing the command to run when changes
+    #                   are detected
+    #        :hooks   - The Array of hashes to be converted into Hook objects
     def initialize(path, args = {})
       to_regex = Proc.new { |r| Regexp.try_convert(r) || Regexp.new(r) }
       
@@ -40,12 +42,12 @@ module Snooper
     end
 
     ##
-    # Public : Create Hook Objects
+    # Public: Create Hook Objects
     #
     # raw_hooks - The Array of maps. Each map should contain the pattern to
     #             match and the command to run.
     #
-    # Returns an Array of Hook
+    # Returns an Array of Hooks
     def create_hooks(raw_hooks)
       raw_hooks.to_a.map do |hook|
         Hook.new hook["pattern"], hook["command"]
@@ -53,11 +55,14 @@ module Snooper
     end
     
     ##
-    # Time Command
+    # Internal: Time Command
     #
     # Run a command and time how long it takes. The exit status of the command
     # and the time taken to run the command are both returned.
-    
+    #
+    # command - The command to run
+    #
+    # Returns the result of the command and the time taken to run it, in seconds
     def time_command(command)
       before = Time.new
       result = system command
@@ -66,11 +71,18 @@ module Snooper
     end
     
     ##
-    # Change callback
+    # Internal: Change callback
     #
     # Called when a filesystem change is detected by +listen+. Runs the command
     # passed to t he constructor and prints a summary of the output.
-    
+    #
+    # modified - The Array of paths that were modified since the last change
+    # added    - The Array of paths that were added since the last change
+    # removed  - The Array of paths that were removed since the last change
+    #
+    # Raises nothing.
+    #
+    # Returns nothing.
     def on_change(modified, added, removed)
       begin
         # Puase the listener to avoid spurious triggers from build output
@@ -105,14 +117,17 @@ module Snooper
     end
   
     ##
-    # Prettify a status line
+    # Internal: Prettify a status line
     #
     # Prints the message at the center of the line, automatically detected
     # from the terminal info. If a block is supplied then the resulting message
     # is post-filtered by it before being returned.
     #
-    # @param message - the message to print
-    
+    # message - the message to print
+    #
+    # Yields the String that has been aligned to the terminal width.
+    #
+    # Returns the prettified String.
     def statusbar(message, time=nil)
       message << " (#{time.round(3)}s)" if time
       message = message.to_s.center TermInfo.screen_width - 1
@@ -120,12 +135,13 @@ module Snooper
     end
     
     ##
-    # Main run loop
+    # Public: Main run loop
     #
     # Registers for filesystem notifications and dispatches them to the
-    # +on_change+ handler. This method also forces a dummy update to ensure that
+    # #on_change handler. This method also forces a dummy update to ensure that
     # tests are run when watching begins.
-    
+    #
+    # Returns the result of the listener
     def run
       
       # Force a change to start with

@@ -10,10 +10,13 @@ require 'optparse'
 require 'yaml'
 
 ##
-# Main program loop
+# Internal: Main program loop
+#
+# options - the hash containing the options.
 #
 # Do our stuff, and exit cleanly when interrupted.
-
+#
+# Returns nothing.
 def test_loop(options)
   begin
     dirs = options[:paths].empty? ? './' : options[:paths]
@@ -25,9 +28,9 @@ def test_loop(options)
 end
 
 ##
-# Parse the command line and load the options
+# Internal: Parse the command line and load the options
 #
-
+# Returns a processed options hash
 def get_options
   
   helptext = <<END

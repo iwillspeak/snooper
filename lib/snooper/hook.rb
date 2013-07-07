@@ -6,13 +6,13 @@
 module Snooper
   
   ##
-  # File Change Hook
+  # Public: File Change Hook
   #
   # Hooks represent a command that is fired when a given file changes. 
   class Hook
 
     ##
-    # Public : Create a new Hook
+    # Public: Create a new Hook
     #
     # pattern - The String or Regex to match
     # command - The String containig the command to be run
@@ -26,7 +26,7 @@ module Snooper
     end
 
     ##
-    # Public : Fire the hook
+    # Public: Fire the hook
     #
     # Returns the exit code of the command
     def fire
@@ -34,7 +34,7 @@ module Snooper
     end
 
     ##
-    # Public : Run the Hook
+    # Public: Run the Hook
     #
     # path - The String to match agains the hook
     #
@@ -48,7 +48,7 @@ module Snooper
     end
 
     ##
-    # Private : Convert a string, regex, or regex-linke to Regexp
+    # Internal: Convert a string, regex, or regex-linke to Regexp
     #
     # regex - The String or Regexp to convert
     #
