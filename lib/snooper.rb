@@ -16,6 +16,7 @@ module Snooper
   
   require 'snooper/snoop'
   require 'snooper/version'
+  require 'snooper/options'
 
   ##
   # Public: Watch for changes in a directory
