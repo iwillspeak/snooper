@@ -2,6 +2,20 @@
 
 require 'test/unit'
 require 'snooper/options'
+require 'snooper/version'
+
+def silent
+  require 'stringio'
+  out = StringIO.new
+  begin
+    save = $stdout
+    $stdout = out
+    yield
+  ensure
+    $stdout = save
+  end
+  out
+end
 
 class TestOptions < Test::Unit::TestCase
 
@@ -30,25 +44,37 @@ class TestOptions < Test::Unit::TestCase
 
   def test_exits
     assert_raise SystemExit do
-      Snooper::Options.parse %w{-h}
+      silent do
+        Snooper::Options.parse %w{-h}
+      end
     end
     assert_raise SystemExit do
-      Snooper::Options.parse %w{--help}
+      silent do
+        Snooper::Options.parse %w{--help}
+      end
     end
     assert_raise SystemExit do
-      Snooper::Options.parse %w{-h -c config_file}
+      silent do
+        Snooper::Options.parse %w{-h -c config_file}
+      end
     end
     assert_raise SystemExit do
-      Snooper::Options.parse %w{-c config_file --help}
+      silent do
+        Snooper::Options.parse %w{-c config_file --help}
+      end
     end
   end
 
   def test_version
     assert_raise SystemExit do
-      Snooper::Options.parse %w{--version}
+      silent do
+        out = Snooper::Options.parse %w{--version}
+      end
     end
     assert_raise SystemExit do
-      Snooper::Options.parse %w{--config configfile --version command string}
+      silent do
+        out = Snooper::Options.parse %w{--config configfile --version command string}
+      end
     end
   end
 end
