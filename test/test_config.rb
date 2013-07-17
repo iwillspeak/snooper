@@ -47,13 +47,13 @@ class TestConfig < Test::Unit::TestCase
   def test_create_options
     
     c = Snooper::Config.new nil, 'cd', :paths => ['test/']
-    assert c.paths == [File.expand_path(Dir.pwd, 'test/')]
+    assert c.paths == [File.expand_path('test/')]
     
     c = Snooper::Config.new '/tmp', 'cd', :paths => ['a', 'b/', 'c']
     assert c.paths == [
-                       File.expand_path('/tmp', 'a'),
-                       File.expand_path('/tmp', 'b'),
-                       File.expand_path('/tmp', 'c')
+                       File.expand_path('a', '/tmp'),
+                       File.expand_path('b', '/tmp'),
+                       File.expand_path('c', '/tmp')
                        ]
 
     c = Snooper::Config.new nil, 'cd', filters: [/hello/, 'world']

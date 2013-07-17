@@ -55,7 +55,7 @@ module Snooper
       @command = command
 
       # paths are expanded relative to tbe base, otherwise the base is returned
-      base_expand = Proc.new { |p| File.expand_path(@base_path, p) }
+      base_expand = Proc.new { |p| File.expand_path(p, @base_path) }
       @paths = (options[:paths] && options[:paths].map(&base_expand))
       @paths ||= [@base_path]
       
