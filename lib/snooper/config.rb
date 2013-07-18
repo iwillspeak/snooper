@@ -5,6 +5,9 @@
 
 module Snooper
 
+  require 'snooper/hook'
+  require 'yaml'
+
   ##
   # Public: Snooper Configuration
   #
@@ -48,6 +51,8 @@ module Snooper
     #                        command is run. Nil or empty for no hooks.
     def initialize(base_path, command, options={})
 
+      raise ArgumentError, "Invalid Command" if command == nil
+
       # use normalised base_path, or CWD if none is given
       @base_path = (base_path && File.expand_path(base_path)) || Dir.pwd
 
@@ -66,6 +71,48 @@ module Snooper
       @ignored = rgx_key.call :ignored
 
       @hooks = options[:hooks] || []
+    end
+
+    ##
+    # Public: create a new config from a YAML file
+    #
+    # Retuns a new instace of the Config class
+    def self.load(*args)
+      instance = allocate
+      instance.initialize_from_yaml *args
+      instance
+    end
+
+    ##
+    # Implementaiton: load and initialise a config from a YAML file
+    #
+    # file_path - The String containing the path to the YAML file.
+    def initialize_from_yaml(file_path)
+      # Load the options file
+      raw_options = YAML.load_file file_path
+
+      base_path = raw_options.delete 'base_path'
+      command = raw_options.delete 'command'
+
+      options = raw_options.each_with_object(Hash.new) do |(key, value), opts|
+        
+        case key
+        when 'paths', 'filters', 'ignored'
+          value = value.split if value.is_a? String
+         
+        when 'hooks'
+          value.map! do |hook_hash|
+            Hook.new hook_hash["pattern"], hook_hash["command"]
+          end
+
+        else
+          $stderr.puts "warning: ignoring unknown option #{key}"
+        end
+
+        opts[key.to_sym] = value
+      end
+      
+      initialize base_path, command, options
     end
   end
 end

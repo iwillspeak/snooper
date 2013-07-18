@@ -7,7 +7,6 @@ MokHook = Struct.new :pattern, :command
 
 class TestConfig < Test::Unit::TestCase
 
-=begin
   require 'tempfile'
   require 'yaml'
 
@@ -19,11 +18,12 @@ class TestConfig < Test::Unit::TestCase
     @config_file.unlink
   end
 
-  def setup_config(config)
-     YAML.dump config, @config_file
-    @config_file.rewind
+  def write_config(config)
+    @config_file.open
+    @config_file.truncate 0
+    YAML.dump config, @config_file
+    @config_file.close
   end
-=end
 
   def test_create_compulsory
     r = Snooper::Config.new '.', 'echo "foo_bar"'
@@ -75,5 +75,71 @@ class TestConfig < Test::Unit::TestCase
     assert c.filters == []
     assert c.ignored == []
   end
-  
+
+  def test_create_errors
+    
+    assert_raise ArgumentError do
+      Snooper::Config.new nil, nil
+    end
+
+    assert_raise ArgumentError do
+      Snooper::Config.new
+    end
+
+    assert_raise ArgumentError do
+      Snooper::Config.new Dir.pwd, nil
+    end
+  end
+
+  def test_load
+    write_config "base_path" => '.', "command" => 'true',
+                 "paths" => ['bin', 'lib'],
+                 "filters" => ".*\.c$ \.h$", "ignored" => ['tmp/.*', 'tst/.*']
+
+    a =  Snooper::Config.load @config_file
+    b =  Snooper::Config.load @config_file.path
+    [a, b].each do |c|
+      assert c.is_a? Snooper::Config
+      assert c.base_path == Dir.pwd
+      assert c.command == 'true'
+      assert c.paths == [File.expand_path('bin'), File.expand_path('lib')]
+    end
+
+    write_config "paths" => "place_one place_two", "command" => 'cd'
+
+    c = Snooper::Config.load @config_file
+    assert c.is_a? Snooper::Config
+    assert c.paths == [File.expand_path('place_one'),
+                       File.expand_path('place_two')]
+
+    write_config 'command' => 'cd',
+                 'hooks' => [
+                             {'pattern' => ".*", 'command' => 'true'},
+                             {'pattern' => ".*", 'command' => 'false'}
+                            ]
+    
+    c = Snooper::Config.load @config_file
+    assert c.hooks.length == 2
+    c.hooks.each do |h|
+      assert h.is_a? Snooper::Hook
+      assert h.run("anythign") != nil
+      assert h.run("at all") != nil
+    end
+    assert c.hooks[0].fire
+    assert !c.hooks[1].fire
+
+    
+  end
+
+  def test_load_empty
+    write_config "command" => "true"
+    
+    c = Snooper::Config.load @config_file
+    assert c.is_a? Snooper::Config
+    assert c.base_path == Dir.pwd
+    assert c.paths == [c.base_path]
+    assert c.filters == []
+    assert c.ignored == []
+    assert c.hooks == []
+  end
 end
