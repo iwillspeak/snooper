@@ -65,8 +65,11 @@ module Snooper
       @paths ||= [@base_path]
       
       # filters all need to be converted to regexes
-      to_regex = Proc.new { |r| Regexp.try_convert(r) || Regexp.new(r) }
-      rgx_key = Proc.new { |k| (options[k] && options[k].map(&to_regex)) || [] }
+      rgx_key = Proc.new do |k|
+        to_regex = Proc.new { |r| Regexp.try_convert(r) || Regexp.new(r) }
+        (options[k] && Array(options[k]).map(&to_regex)) || []
+      end
+
       @filters = rgx_key.call :filters
       @ignored = rgx_key.call :ignored
 

@@ -125,10 +125,14 @@ class TestConfig < Test::Unit::TestCase
       assert h.run("anythign") != nil
       assert h.run("at all") != nil
     end
+
     assert c.hooks[0].fire
     assert !c.hooks[1].fire
 
-    
+    write_config 'command' => 'true', 'filters' => '\.c$', 'ignored' => '\.h$'
+    c = Snooper::Config.load @config_file
+    assert c.filters.length == 1
+    assert c.ignored.length == 1
   end
 
   def test_load_empty
