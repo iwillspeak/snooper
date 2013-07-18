@@ -8,11 +8,16 @@ Gem::Specification.new do |s|
   s.date        = Date.today
   s.platform    = Gem::Platform::RUBY
   s.summary     = "Spying on Tests"
-  s.description = "Snooper is a lightweight test automation tool, it monitors files and folders while you work and re-runs your tests when you change something. Snooper doesn't care what language you're using or what framework you are testing with, it's all configureable."
+  s.description = <<ENDESC
+Snooper is a lightweight test automation tool, it monitors files and folders
+while you work and re-runs your tests when you change something. Snooper doesn't
+care what language you're using or what framework you are testing with, it's all
+configureable.
+ENDESC
   s.license     = 'MIT'
   s.homepage    = 'http://github.com/iwillspeak/snooper'
   s.authors     = ["Will Speak"]
-  s.email       = 'lithiumflame@gmail.com'
+  s.email       = 'will@willspeak.me'
   # Gem contents
   s.files       = Dir.glob("{lib,bin,man}/**/*") + %w[LICENCE.md README.md]
   s.executables << 'snooper'
