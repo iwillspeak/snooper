@@ -8,7 +8,7 @@ WATCH_PATH = ENV["TMP"]
 # Allow ourselves access to the attributes we want to
 # peak at
 class Snooper::Snoop
-  attr_reader :command, :paths, :filters, :ignored
+  attr_reader :config
 end
 
 class TestSnoop < Test::Unit::TestCase
@@ -60,7 +60,7 @@ class TestSnoop < Test::Unit::TestCase
     s = Snooper::Snoop.new WATCH_PATH, options
 
     assert s != nil
-    h = s.instance_variable_get :@hooks
+    h = s.config.hooks
     assert h
     assert h.length == 1
     h.each do |hook|
@@ -77,9 +77,9 @@ class TestSnoop < Test::Unit::TestCase
     }
     s = Snooper::Snoop.new WATCH_PATH, options
 
-    assert_equal(s.command, options[:command])
-    assert_equal(s.filters, [/foo/])
-    assert_equal(s.ignored, [/bar/])
+    assert_equal(s.config.command, options[:command])
+    assert_equal(s.config.filters, [/foo/])
+    assert_equal(s.config.ignored, [/bar/])
 
     options = {
       :command => 'echo "foo bar && true',
@@ -88,9 +88,9 @@ class TestSnoop < Test::Unit::TestCase
     }
     s = Snooper::Snoop.new WATCH_PATH, options
 
-    assert_equal(s.command, options[:command])
-    assert_equal(s.filters, [/foo/, /bar/])
-    assert_equal(s.ignored, [/bar/, /foo/])
+    assert_equal(s.config.command, options[:command])
+    assert_equal(s.config.filters, [/foo/, /bar/])
+    assert_equal(s.config.ignored, [/bar/, /foo/])
 
     options = {
       :command => 'echo "foo bar && true',
@@ -99,9 +99,9 @@ class TestSnoop < Test::Unit::TestCase
     }
     s = Snooper::Snoop.new WATCH_PATH, options
 
-    assert_equal(s.command, options[:command])
-    assert_equal(s.filters, [/this[0-9]isaregex/])
-    assert_equal(s.ignored, [/this[a-z]istoo/])
+    assert_equal(s.config.command, options[:command])
+    assert_equal(s.config.filters, [/this[0-9]isaregex/])
+    assert_equal(s.config.ignored, [/this[a-z]istoo/])
   end
 
 end

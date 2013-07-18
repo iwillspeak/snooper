@@ -68,6 +68,11 @@ class TestConfig < Test::Unit::TestCase
     assert c.hooks.is_a? Array
     assert c.hooks == hooks
 
+    c = Snooper::Config.new nil, 'cd', hooks: [ { "pattern" => "\.h",
+                                                  "command" => "make clean"} ]
+    assert c.hooks.is_a? Array
+    c.hooks.each { |h| assert h.is_a? Snooper::Hook }
+
     # test the default values
     c = Snooper::Config.new nil, 'cd'
     assert c.paths == [c.base_path]

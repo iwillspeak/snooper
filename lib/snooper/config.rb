@@ -73,7 +73,26 @@ module Snooper
       @filters = rgx_key.call :filters
       @ignored = rgx_key.call :ignored
 
-      @hooks = options[:hooks] || []
+      @hooks = (options[:hooks] && create_hooks(options[:hooks])) || []
+    end
+
+    ##
+    # Public: Create Hook Objects
+    #
+    # raw_hooks - The Array of unprocessed hooks. Each item shoudl either be
+    #             a map containing the pattern to match and the command to run
+    #             or a Hook or Hook-like object.
+    #
+    # Returns an Array of Hooks
+    def create_hooks(raw_hooks)
+      raw_hooks.to_a.map do |hook|
+        case hook
+        when Hash
+          Hook.new hook["pattern"], hook["command"]
+        else
+          hook
+        end
+      end
     end
 
     ##

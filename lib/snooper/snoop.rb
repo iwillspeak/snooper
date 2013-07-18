@@ -3,7 +3,7 @@
 # Copyright:: Copyright (c) 2013 Will Speak
 # License::   Snoop is open source! See LICENCE.md for more details.
 
-require 'snooper/hook'
+require 'snooper/config'
 
 module Snooper
   
@@ -29,29 +29,8 @@ module Snooper
     #        :command - The String containing the command to run when changes
     #                   are detected
     #        :hooks   - The Array of hashes to be converted into Hook objects
-    def initialize(path, args = {})
-      to_regex = Proc.new { |r| Regexp.try_convert(r) || Regexp.new(r) }
-      
-      @paths = Array(path)
-      @filters = args[:filters]
-      @filters = Array(@filters).map(&to_regex) if @filters
-      @ignored = args[:ignored]
-      @ignored = Array(@ignored).map(&to_regex) if @ignored
-      @command = args[:command]
-      @hooks = create_hooks(args[:hooks])
-    end
-
-    ##
-    # Public: Create Hook Objects
-    #
-    # raw_hooks - The Array of maps. Each map should contain the pattern to
-    #             match and the command to run.
-    #
-    # Returns an Array of Hooks
-    def create_hooks(raw_hooks)
-      raw_hooks.to_a.map do |hook|
-        Hook.new hook["pattern"], hook["command"]
-      end
+    def initialize(path, args = { command: 'true'})
+      @config = Snooper::Config.new args[:base_path], args[:command], args
     end
     
     ##
@@ -96,7 +75,7 @@ module Snooper
         statusline << ('+' * added.length).green
         puts "#{statusline} #{changes.length.to_s.magenta.bold} changes"
         
-        @hooks.each do |hook|
+        @config.hooks.each do |hook|
           hook.run changes
         end
 
@@ -116,7 +95,7 @@ module Snooper
     # Return result of the command
     def run_command
       # run the test suite and check the result
-      res, time = time_command @command
+      res, time = time_command @config.command
       if res then
         puts statusbar "✓ All tests passed", time, &:white_on_green
       else
@@ -158,8 +137,8 @@ module Snooper
       
       callback_helper = Proc.new {|*args| self.on_change *args }
       
-      @listener = Listen.to(*@paths, :latency => 0.5, :filter => @filters, \
-        :ignore => @ignored)
+      @listener = Listen.to(*@config.paths, latency: 0.5,
+                            filter: @config.filters, ignore: @config.ignored)
       @listener.change &callback_helper
 
       @listener.start!
