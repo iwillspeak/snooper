@@ -50,6 +50,21 @@ module Snooper
     end
     
     ##
+    # Internal: Run a block in a dir
+    #
+    # direcotry - The String containing the path to change to
+    # block     - The block to run
+    #
+    # Returns the result of the block's execution.
+    def in_dir(directory, &block)
+      old_dir = File.expand_path '.'
+      Dir.chdir directory if directory
+      r = yield block
+      Dir.chdir old_dir
+      r
+    end
+
+    ##
     # Internal: Change callback
     #
     # Called when a filesystem change is detected by +listen+. Runs the command
@@ -131,17 +146,18 @@ module Snooper
     #
     # Returns the result of the listener
     def run
-      
-      # Force a change to start with
-      run_command
-      
-      callback_helper = Proc.new {|*args| self.on_change *args }
-      
-      @listener = Listen.to(*@config.paths, latency: 0.5,
-                            filter: @config.filters, ignore: @config.ignored)
-      @listener.change &callback_helper
+      in_dir @config.base_path do
+        # Force a change to start with
+        run_command
+        
+        callback_helper = Proc.new { |*args| self.on_change *args }
+        
+        @listener = Listen.to(*@config.paths, latency: 0.5,
+                              filter: @config.filters, ignore: @config.ignored)
+        @listener.change &callback_helper
 
-      @listener.start!
+        @listener.start!
+      end
     end
   end
 end
