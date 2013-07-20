@@ -66,6 +66,59 @@ class TestConfig < Test::Unit::TestCase
     assert c.ignored == []
   end
 
+  def test_create_snoop_migrations
+
+    options = {
+      :command => 'echo "hello world"',
+      :filters => 'foo',
+      :ignored => 'bar'
+    }
+    c = Snooper::Config.new WATCH_PATH, options[:command], options
+
+    assert_equal(c.command, options[:command])
+    assert_equal(c.filters, [/foo/])
+    assert_equal(c.ignored, [/bar/])
+
+    options = {
+      :command => 'echo "foo bar && true',
+      :filters => ['foo', 'bar'],
+      :ignored => ['bar', 'foo']
+    }
+    c = Snooper::Config.new WATCH_PATH, options[:command], options
+
+    assert_equal(c.command, options[:command])
+    assert_equal(c.filters, [/foo/, /bar/])
+    assert_equal(c.ignored, [/bar/, /foo/])
+
+    options = {
+      :command => 'echo "foo bar && true',
+      :filters => Regexp.new('this[0-9]isaregex'),
+      :ignored => Regexp.new('this[a-z]istoo')
+    }
+    c = Snooper::Config.new WATCH_PATH, options[:command], options
+
+    assert_equal(c.command, options[:command])
+    assert_equal(c.filters, [/this[0-9]isaregex/])
+    assert_equal(c.ignored, [/this[a-z]istoo/])
+  end
+
+  def test_hooks_migrated
+    options = {
+      :hooks => [ { "pattern" => "\.h", "command" => "make clean"} ],
+      :command => 'true'
+    }
+    
+    c = Snooper::Config.new WATCH_PATH, options[:command], options
+
+    assert c != nil
+    h = c.hooks
+    assert h
+    assert h.length == 1
+    h.each do |hook|
+      assert hook.is_a? Snooper::Hook
+    end
+  end
+
   def test_create_errors
     
     assert_raise ArgumentError do
