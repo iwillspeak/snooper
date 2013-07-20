@@ -15,18 +15,16 @@
 module Snooper
   
   require 'snooper/snoop'
-  require 'snooper/version'
   require 'snooper/options'
+  require 'snooper/config'
 
   ##
   # Public: Watch for changes in a directory
   #
-  # args - The Hash containing the options. See Snooper::Snoop.new for more
-  #        information
+  # config - The String containing the path to a config or a Config-like object
   #
   # Returns the reseult of the run.
-  def self.watch(*args)
-    george = Snoop.new *args
-    george.run
+  def self.watch(config)
+    Snoop.new(config).run
   end
 end

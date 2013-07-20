@@ -6,107 +6,27 @@
 
 require 'snooper'
 require 'colored'
-require 'optparse'
-require 'yaml'
 
 ##
 # Internal: Main program loop
 #
-# options - the hash containing the options.
+# config - the hash containing the options.
 #
 # Do our stuff, and exit cleanly when interrupted.
 #
 # Returns nothing.
 def test_loop(options)
-  begin
-    dirs = options[:paths].empty? ? './' : options[:paths]
-    Snooper.watch dirs, options
-  rescue Interrupt
-    puts # This is where the ^C is on unix
-    puts "Testing over, time for a coffee...".yellow
-  end
-end
-
-##
-# Internal: Load a Config File
-#
-# path - The String containing the path to the config file
-#
-# Returns a Hash containing the processed config.
-def load_config(path)
-  # Load the config file
-  begin
-    yamopts = YAML.load_file path
-  rescue Exception => e
-    puts "Error loading the config: #{e}"
-    exit 1
-  end
-  
-  if not yamopts.is_a? Hash
-    puts "Invalid options file"
-    exit 1
-  end
-  
-  # default config
-  config = {
-    :base_path => nil,
-    :command => nil,
-    :filters => [],
-    :ignored => [],
-    :paths => [],
-    :hooks => []
-  }
-  
-  yamopts.each do |option, argument|
-    case option
-    when 'base_path', 'command'
-      config[option.to_sym] = argument.to_s
-
-    when 'paths', 'filters', 'ignored'
-      argument = argument.split if argument.is_a? String
-      config[option.to_sym] += Array(argument)
-
-    when 'hooks'
-      argument.each do |hook|
-        config[:hooks] << hook
-      end
-
-    else
-      puts "Ignoring unknown option #{option}".red
-    end
-  end
-  
-  if config[:base_path]
-    base = File.expand_path config[:base_path], File.dirname(path)
-    config[:paths].map! { |p| File.expand_path p, base }
-    config[:base_path] = base
-  end
-  
-  config
+  Snooper.watch options
+rescue Interrupt
+  puts # This is where the ^C is on unix
+  puts "Testing over, time for a coffee...".yellow
 end
 
 options = Snooper::Options.parse ARGV
-config = load_config options.config_path
+config = Snooper::Config.load options.config_path
 
 # Override the command if one was specified
-config[:command] = options.command if options.command
-
-##
-# Internal: Run a block in a dir
-#
-# direcotry - The String containing the path to change to
-# block     - The block to run
-#
-# Returns the result of the block's execution.
-def in_dir(directory, &block)
-  old_dir = File.expand_path '.'
-  Dir.chdir directory if directory
-  r = yield block
-  Dir.chdir old_dir
-  r
-end
+config.command = options.command if options.command
 
 # Run the tests, pusing the target directory
-in_dir config[:base_path] do
-  test_loop config
-end
+test_loop config
