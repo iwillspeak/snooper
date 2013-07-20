@@ -6,6 +6,8 @@
 module Snooper
 
   module Options
+    require 'optparse'
+
     ##
     # Public: Command Line Options
     ParsedOptions = Struct.new :config_path, :command
