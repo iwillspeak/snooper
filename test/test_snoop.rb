@@ -13,11 +13,15 @@ end
 
 class TestSnoop < Test::Unit::TestCase
   
+  require 'tempconfig'
+  include TempConfig
+  
   ##
   # We need an instance of the class to mess with
   
   def setup
     @snoop = Snooper::Snoop.new WATCH_PATH
+    super
   end
   
   def test_statusbar
