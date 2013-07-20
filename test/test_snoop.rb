@@ -13,14 +13,15 @@ end
 
 class TestSnoop < Test::Unit::TestCase
   
-  require 'tempconfig'
-  include TempConfig
+  require 'utils'
+  include TestUtils::TempConfig
   
   ##
   # We need an instance of the class to mess with
   
   def setup
-    @snoop = Snooper::Snoop.new WATCH_PATH
+    config = TestUtils::MockConfig.new base_path: WATCH_PATH, command: 'true'
+    @snoop = Snooper::Snoop.new config
     super
   end
   
@@ -52,7 +53,29 @@ class TestSnoop < Test::Unit::TestCase
 
     r = @snoop.statusbar "h", 12.123
     assert r.include? "12.123s"
-
   end
 
+  def test_create_with_config
+    config = {
+      :command => 'echo "Hello World"',
+      :base_path => Dir.pwd,
+      :paths => [ File.expand_path('test', Dir.pwd) ],
+      :filters => [ /\.c$/, /\.h$/ ],
+      :ignored => [ /test_.*\.c$/ ]
+    }
+    config = TestUtils::MockConfig.new config
+    
+    s = Snooper::Snoop.new config
+    assert s
+    assert_equal config, s.config
+    assert_equal 'echo "Hello World"', s.config.command
+  end
+  
+  def test_cteate_with_config_path
+    write_config 'base_path' => Dir.pwd, 'command' => 'true'
+    
+    s = Snooper::Snoop.new @config_file.path
+    assert s.config.is_a? Snooper::Config
+    TestUtils.silent { assert s.run_command }
+  end
 end

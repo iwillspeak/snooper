@@ -7,8 +7,8 @@ MokHook = Struct.new :pattern, :command
 
 class TestConfig < Test::Unit::TestCase
 
-  require 'tempconfig'
-  include TempConfig
+  require 'utils'
+  include TestUtils::TempConfig
 
   def test_create_compulsory
     r = Snooper::Config.new '.', 'echo "foo_bar"'

@@ -21,16 +21,16 @@ module Snooper
     ##
     # Public: Create a new source code spy
     #
-    # path - the String or  Array path (or paths) to begin watching
-    # args - the Hash of options
-    #        :filters - The Array, String or Regexp files to include, empty or
-    #                   to signify no filter.
-    #        :ignored - The Array, String or Regexp paths to ignore. As above.
-    #        :command - The String containing the command to run when changes
-    #                   are detected
-    #        :hooks   - The Array of hashes to be converted into Hook objects
-    def initialize(path, args = { command: 'true'})
-      @config = Snooper::Config.new args[:base_path], args[:command], args
+    # config - The String containing the path to the config or a Snooper::Config
+    #          like object. If the path is a directory and not a file then
+    #          default config names are searched for in the direcory.
+    def initialize(config)
+      case config
+      when String
+        @config = Snooper::Config.load config
+      else
+        @config = config
+      end
     end
     
     ##
