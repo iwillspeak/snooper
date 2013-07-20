@@ -51,7 +51,7 @@ module Snooper
     #                        command is run. Nil or empty for no hooks.
     def initialize(base_path, command, options={})
 
-      raise ArgumentError, "Invalid Command" if command == nil
+      raise ArgumentError, "No command supplied in config" if command == nil
 
       # use normalised base_path, or CWD if none is given
       @base_path = (base_path && File.expand_path(base_path)) || Dir.pwd

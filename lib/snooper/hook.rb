@@ -19,8 +19,12 @@ module Snooper
     #
     # Returns a new Hook
     def initialize(pattern, command)
-      raise ArgumentError, "invalid pattern" if pattern == nil
-      raise ArgumentError, "invalid command" if command == nil
+      if pattern == nil
+        raise ArgumentError, "No pattern supplied for Hook '#{command}'"
+      end
+      if command == nil
+        raise ArgumentError, "No command supplied for Hook '#{pattern}'"
+      end
       @command = command
       @pattern = to_regex pattern
     end

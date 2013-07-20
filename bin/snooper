@@ -23,7 +23,13 @@ rescue Interrupt
 end
 
 options = Snooper::Options.parse ARGV
-config = Snooper::Config.load options.config_path
+
+begin
+  config = Snooper::Config.load options.config_path
+rescue Exception => error
+  $stdout.puts "#{$0}: error: couldn't load '#{options.config_path}' (#{error})"
+  exit 1
+end
 
 # Override the command if one was specified
 config.command = options.command if options.command
