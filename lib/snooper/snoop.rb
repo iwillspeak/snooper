@@ -78,30 +78,28 @@ module Snooper
     #
     # Returns nothing.
     def on_change(modified, added, removed)
-      begin
-        # Puase the listener to avoid spurious triggers from build output
-        @listener.pause if @listener
+      # Puase the listener to avoid spurious triggers from build output
+      @listener.pause if @listener
       
-        # summarise the changes made
-        changes = modified + added + removed
-        
-        statusline = ('-' * removed.length).red
-        statusline << ('.' * modified.length).blue
-        statusline << ('+' * added.length).green
-        puts "#{statusline} #{changes.length.to_s.magenta.bold} changes"
-        
-        @config.hooks.each do |hook|
-          hook.run changes
-        end
-
-        run_command
-        
-        # return to listening
-        @listener.unpause if @listener
-      rescue Exception => e
-        puts e.message
-        puts e.backtrace
+      # summarise the changes made
+      changes = modified + added + removed
+      
+      statusline = ('-' * removed.length).red
+      statusline << ('.' * modified.length).blue
+      statusline << ('+' * added.length).green
+      puts "#{statusline} #{changes.length.to_s.magenta.bold} changes"
+      
+      @config.hooks.each do |hook|
+        hook.run changes
       end
+
+      run_command
+      
+      # return to listening
+      @listener.unpause if @listener
+    rescue Exception => e
+      puts e.message
+      puts e.backtrace
     end
 
     ##
