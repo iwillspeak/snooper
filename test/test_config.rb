@@ -189,4 +189,17 @@ class TestConfig < Test::Unit::TestCase
     assert c.ignored == []
     assert c.hooks == []
   end
+
+  def test_remembers_load_path
+    write_config "command" => 'cd'
+    
+    c = Snooper::Config.load @config_file
+    assert_equal c.file_path, File.expand_path(@config_file.path)
+
+    c = Snooper::Config.load @config_file.path
+    assert_equal c.file_path, File.expand_path(@config_file.path)
+
+    c = Snooper::Config.load File.open(@config_file.path)
+    assert_equal c.file_path, File.expand_path(@config_file.path)
+  end
 end

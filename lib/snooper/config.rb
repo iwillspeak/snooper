@@ -32,6 +32,9 @@ module Snooper
     # hooks - The Array of Hook objects
     attr_accessor :hooks
 
+    # file_path - The location the config was loaded from
+    attr_accessor :file_path
+
     ##
     # Public: create a new config object
     #
@@ -133,6 +136,8 @@ module Snooper
 
         opts[key.to_sym] = value
       end
+
+      @file_path = (file_path.is_a?(String) && file_path) || file_path.path
       
       initialize base_path, command, options
     end
