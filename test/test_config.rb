@@ -201,5 +201,8 @@ class TestConfig < Test::Unit::TestCase
 
     c = Snooper::Config.load File.open(@config_file.path)
     assert_equal c.file_path, File.expand_path(@config_file.path)
+
+    c = Snooper::Config.new ".", "cd"
+    assert_equal c.file_path, nil
   end
 end
