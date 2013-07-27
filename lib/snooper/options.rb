@@ -4,6 +4,7 @@
 # License::   Snooper is open source! See LICENCE.md for more details.
 
 module Snooper
+  require 'snooper/version'
 
   module Options
     require 'optparse'
@@ -45,7 +46,7 @@ END
         end
 
         parser.on("--version", "show version information") do
-          puts "Snooper v#{Snooper::VERSION}"
+          puts "Snooper v#{VERSION}"
           exit
         end
         
