@@ -146,7 +146,10 @@ module Snooper
     def run
       if @config.file_path
         dir = File.dirname @config.file_path
-        Listen.to dir, filter: %r{^#{@config.file_path}$} do |*args|
+        filter = %r{#{File.basename @config.file_path}$}
+        Listen.to dir, relative_paths: false, filter: filter do |*args|
+          next unless args.reduce(&:+).include? @config.file_path
+          puts statusbar "Re-loading Config File...", &:yellow
           @listener.stop if @listener
         end
       end

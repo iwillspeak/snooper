@@ -139,21 +139,24 @@ class TestConfig < Test::Unit::TestCase
                  "paths" => ['bin', 'lib'],
                  "filters" => ".*\.c$ \.h$", "ignored" => ['tmp/.*', 'tst/.*']
 
+    d = File.dirname(@config_file)
+
     a =  Snooper::Config.load @config_file
     b =  Snooper::Config.load @config_file.path
     [a, b].each do |c|
       assert c.is_a? Snooper::Config
-      assert c.base_path == Dir.pwd
-      assert c.command == 'true'
-      assert c.paths == [File.expand_path('bin'), File.expand_path('lib')]
+      assert_equal d, c.base_path
+      assert_equal 'true', c.command
+      assert_equal [File.expand_path('bin', d),
+                    File.expand_path('lib', d)], c.paths
     end
 
     write_config "paths" => "place_one place_two", "command" => 'cd'
 
     c = Snooper::Config.load @config_file
     assert c.is_a? Snooper::Config
-    assert c.paths == [File.expand_path('place_one'),
-                       File.expand_path('place_two')]
+    assert c.paths == [File.expand_path('place_one', d),
+                       File.expand_path('place_two', d)]
 
     write_config 'command' => 'cd',
                  'hooks' => [
@@ -181,9 +184,12 @@ class TestConfig < Test::Unit::TestCase
   def test_load_empty
     write_config "command" => "true"
     
+    d = File.dirname(@config_file)
+
     c = Snooper::Config.load @config_file
+
     assert c.is_a? Snooper::Config
-    assert c.base_path == Dir.pwd
+    assert c.base_path == d
     assert c.paths == [c.base_path]
     assert c.filters == []
     assert c.ignored == []

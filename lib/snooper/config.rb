@@ -154,7 +154,21 @@ module Snooper
         opts[key.to_sym] = value
       end
 
-      @file_path = (file_path.is_a?(String) && file_path) || file_path.path
+      case file_path
+      when String
+        @file_path = file_path
+      when Pathname
+        @file_path = file_path.to_s
+      else
+        @file_path = file_path.path
+      end
+
+      # Expand out the base path relative to the file, not the PWD
+      if base_path
+        base_path = File.expand_path base_path, File.dirname(@file_path)
+      else
+        base_path = File.dirname(@file_path)
+      end
       
       initialize base_path, command, options
     end
