@@ -12,7 +12,7 @@ class TestOptions < Test::Unit::TestCase
     arguments = []
     opts = Snooper::Options.parse arguments
     assert opts
-    assert opts.config_path == '.snooper.yaml'
+    assert_not_equal nil, opts.config_path #shoudl at least find our config..
     assert opts.command == nil
 
     arguments = ['this is a command']

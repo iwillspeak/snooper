@@ -32,7 +32,7 @@ For more information see snooper(1).
 END
 
       options = ParsedOptions.new
-      options.config_path = '.snooper.yaml'
+      options.config_path = nil
 
       parser = OptionParser.new do |parser|
         parser.banner =
@@ -67,8 +67,28 @@ END
         exit 1
       end
 
+      options.config_path = find_config unless options.config_path
+
       options.command = arguments.join " " if not arguments.empty?
       options
     end
+
+    private
+    
+    ##
+    # Internal : Find a config file to use
+    #
+    # Returns the path to the config, or nil if none can be found
+    def self.find_config
+      file_name = '.snooper.yaml'
+
+      Pathname.pwd.ascend do |subpath|
+        location = subpath + file_name
+        return location if location.exist?
+      end
+
+      nil
+    end
+
   end
 end
