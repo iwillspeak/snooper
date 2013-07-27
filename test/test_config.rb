@@ -205,4 +205,42 @@ class TestConfig < Test::Unit::TestCase
     c = Snooper::Config.new ".", "cd"
     assert_equal c.file_path, nil
   end
+
+  def test_reload_config
+    write_config 'command' => 'cd'
+    
+    c = Snooper::Config.load @config_file
+    assert_equal 'cd', c.command
+    assert_equal true, c.reload
+    assert_equal 'cd', c.command
+
+    write_config 'command' => 'false', 'filters' => '\.x$'
+    assert_equal true, c.reload
+    assert_equal [/\.x$/], c.filters
+    
+    write_config 'command' => 'true'
+    assert_equal true, c.reload
+    assert_equal 'true', c.command
+    assert_equal [], c.filters
+  end
+
+  def test_reload_raw_fails
+    c = Snooper::Config.new Dir.pwd, 'cd'
+    
+    assert c.reload == nil
+  end
+
+  def test_reload_when_removed_fails
+    write_config 'command' => 'echo "Hello world"'
+    
+    c = Snooper::Config.load @config_file.path
+    assert_equal true, c.reload
+    assert_equal 'echo "Hello world"', c.command
+    
+    File.delete @config_file.path
+
+    assert_equal false, c.reload
+    assert_equal 'echo "Hello world"', c.command
+  end
+
 end

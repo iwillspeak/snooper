@@ -41,7 +41,7 @@ module Snooper
     # base_path - The String representing the path from which all the other
     #             paths should be resolved. Nil to use the current directory.
     # command   - The command to execute when a change satisfies all the
-    #             predicates. 
+    #             predicates.
     # options   - The hash containing all of the optinal parameters.
     #             :paths   - The Array of the paths to watch, relative to the
     #                        base. Nil or empty to watch the whole directory.
@@ -106,6 +106,23 @@ module Snooper
       instance = allocate
       instance.initialize_from_yaml *args
       instance
+    end
+
+    ##
+    # Public : Re-Load the config from a YAML file
+    #
+    # Retuns true if the config was successully reloaded, false if loading
+    # failed for any reason, and nil if the config wasn't loaded from a file in
+    # in the first place
+    def reload
+      if @file_path
+        initialize_from_yaml @file_path
+        true
+      else
+        nil
+      end
+    rescue
+      false
     end
 
     ##

@@ -144,6 +144,29 @@ module Snooper
     #
     # Returns the result of the listener
     def run
+      if @config.file_path
+        dir = File.dirname @config.file_path
+        Listen.to dir, filter: %r{^#{@config.file_path}$} do |*args|
+          @listener.stop if @listener
+        end
+      end
+
+      # loop forever listening, each time the above block causes the listener
+      # to stop it will re-start listening with the new config.
+      while true
+        do_listening
+        @config.reload
+      end
+    end
+
+    ##
+    # Internal : Do the Filesystem Listening
+    #
+    # This function blocks while it listens to the filsystem for changes. When
+    # the lisetner terminates it returns the listener's status
+    #
+    # Returns the result of the listener
+    def do_listening
       in_dir @config.base_path do
         # Force a change to start with
         run_command
@@ -157,5 +180,6 @@ module Snooper
         @listener.start!
       end
     end
+
   end
 end
