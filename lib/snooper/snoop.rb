@@ -177,7 +177,8 @@ module Snooper
         callback_helper = Proc.new { |*args| self.on_change *args }
         
         @listener = Listen.to(*@config.paths, latency: 0.5,
-                              filter: @config.filters, ignore: @config.ignored)
+                              filter: @config.filters, ignore: @config.ignored,
+                              force_polling: @config.force_poll)
         @listener.change &callback_helper
 
         @listener.start!

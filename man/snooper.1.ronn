@@ -9,7 +9,7 @@ snooper(1) -- Spy on Tests
 
 **Snooper** is a lightweight test automation tool, it monitors files and
 folders while you work and re-runs your tests when you change something.
-Snooper doesn't care what language you're using or what framework you are 
+Snooper doesn't care what language you're using or what framework you are
 testing with, it's all configureable.
 
 ## OPTIONS
@@ -21,6 +21,10 @@ subsection of a project that has it's own tests.
  * `-c`, `--config` <configfile>:
    Specify the configuration file to use. The default is `.snooper.yaml` in the
    current directory.
+
+ * `-p`, `--poll`
+   Force polling. Use this if there seem to be bugs in your builtin OS file
+   notification system.
 
  * <command_line>:
    One or more <command_line>s to execute when source files change. Overides any

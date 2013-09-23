@@ -34,5 +34,8 @@ end
 # Override the command if one was specified
 config.command = options.command if options.command
 
+# Force polling if command line flag is set
+config.force_poll |= options.poll
+
 # Run the tests, pusing the target directory
 test_loop config

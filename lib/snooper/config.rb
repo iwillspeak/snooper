@@ -35,6 +35,9 @@ module Snooper
     # file_path - The location the config was loaded from
     attr_accessor :file_path
 
+    # force_poll - Make sure polling is used
+    attr_accessor :force_poll
+
     ##
     # Public: create a new config object
     #
@@ -77,6 +80,8 @@ module Snooper
       @ignored = rgx_key.call :ignored
 
       @hooks = (options[:hooks] && create_hooks(options[:hooks])) || []
+
+      @force_poll = false
     end
 
     ##

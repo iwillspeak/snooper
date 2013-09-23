@@ -11,7 +11,7 @@ module Snooper
 
     ##
     # Public: Command Line Options
-    ParsedOptions = Struct.new :config_path, :command
+    ParsedOptions = Struct.new :config_path, :command, :poll
 
     ##
     # Public: Parse the command line
@@ -50,6 +50,10 @@ END
           exit
         end
         
+        parser.on("-p", "--poll", "Force filesystem polling.") do
+          options.poll = true
+        end
+
         parser.on("-h", "--help", "Show this message") do
           puts parser
           exit
