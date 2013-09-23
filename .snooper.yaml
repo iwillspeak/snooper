@@ -1,4 +1,4 @@
 base_path: .
 command: ruby -I test -I lib test/test_suite.rb
-paths: [lib, test]
+paths: [lib, test, bin]
 filters: \.rb$
