@@ -17,7 +17,7 @@ String options
  
  * `base_path:` <directory>:
    Specifies the <directory> that `snooper` should base all relative paths from.
-   This is also the working directory that commands will inherit.
+   This is also the working directory that commands and hooks will inherit.
    
  * `command:` <command_string>:
    Specifies the command string to execute when a file change is detected.
@@ -34,6 +34,9 @@ String Array options
    changes. These should be in a format understood by ruby(1)'s Regex.new
    method. If none are given then all changes in watched directories trigger
    testing.
+   
+   A file change satisfies these filters if the file path matches any of the
+   regular expressions in `filters` and none of those in `ignored`.
    
    _Note_: as these are regular expressions `\.c` will match both
    `foo.c` and `bar.cfg`, `\.c$` will only match `.c` files.
