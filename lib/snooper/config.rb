@@ -81,7 +81,8 @@ module Snooper
 
       @hooks = (options[:hooks] && create_hooks(options[:hooks])) || []
 
-      @force_poll = false
+      # Force poll if it is stored in the options file.
+      @force_poll = !!options[:force_poll]
     end
 
     ##
@@ -151,6 +152,9 @@ module Snooper
           value.map! do |hook_hash|
             Hook.new hook_hash["pattern"], hook_hash["command"]
           end
+
+        when 'force_poll'
+          # Boolean conversion is all done by YAML
 
         else
           $stderr.puts "warning: ignoring unknown option #{key}"

@@ -41,6 +41,13 @@ String Array options
    _Note_: as these are regular expressions `\.c` will match both
    `foo.c` and `bar.cfg`, `\.c$` will only match `.c` files.
 
+Boolean Options
+
+ * `force_poll`: <force>
+	Specifies if the polling fallback mode should be used. This mode can be slower and more buggy. Set this option to true if you want to use polling but don't want to have to specify it on the command line. Defaults to false.
+
+_Note_: This option can be overridden from the command line with the `--poll` option.
+
 Hooks
 
 Hooks are useful to pefrom special commads upon a subset of the file-change

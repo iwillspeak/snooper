@@ -171,6 +171,12 @@ module Snooper
     # Returns the result of the listener
     def do_listening
       in_dir @config.base_path do
+
+        # Notify people if we are using fallback mode
+        if @config.force_poll
+          puts statusbar "Using polling fallback listener", &:yellow
+        end
+
         # Force a change to start with
         run_command
         

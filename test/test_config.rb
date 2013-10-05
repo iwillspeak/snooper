@@ -58,12 +58,27 @@ class TestConfig < Test::Unit::TestCase
     assert c.hooks.is_a? Array
     c.hooks.each { |h| assert h.is_a? Snooper::Hook }
 
+    # check polling is stored correctly
+    c = Snooper::Config.new nil, 'cd', force_poll: false
+    assert c.force_poll == false
+    c = Snooper::Config.new nil, 'cd', force_poll: true
+    assert c.force_poll == true
+
+    # check that polling is cast to bool
+    c = Snooper::Config.new nil, 'cd', force_poll: nil
+    assert c.force_poll == false
+    c = Snooper::Config.new nil, 'cd', force_poll: 0
+    assert c.force_poll == true # pretty much everything is true
+    c = Snooper::Config.new nil, 'cd', force_poll: 'helloworld'
+    assert c.force_poll == true # yay for Ruby truthness :-)
+
     # test the default values
     c = Snooper::Config.new nil, 'cd'
     assert c.paths == [c.base_path]
     assert c.hooks == []
     assert c.filters == []
     assert c.ignored == []
+    assert c.force_poll == false
   end
 
   def test_create_snoop_migrations

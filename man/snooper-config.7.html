@@ -129,6 +129,16 @@ regular expressions in <code>filters</code> and none of those in <code>ignored</
 </dl>
 
 
+<p>Boolean Options</p>
+
+<ul>
+<li><code>force_poll</code>: <var>force</var>
+ Specifies if the polling fallback mode should be used. This mode can be slower and more buggy. Set this option to true if you want to use polling but don't want to have to specify it on the command line. Defaults to false.</li>
+</ul>
+
+
+<p><em>Note</em>: This option can be overridden from the command line with the <code>--poll</code> option.</p>
+
 <p>Hooks</p>
 
 <p>Hooks are useful to pefrom special commads upon a subset of the file-change
