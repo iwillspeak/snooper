@@ -108,12 +108,18 @@ testing with, it's all configureable.</p>
 override the command that is run. This is useful if you are only working on a
 subsection of a project that has it's own tests.</p>
 
-<dl>
-<dt><code>-c</code>, <code>--config</code> <var>configfile</var></dt><dd><p>Specify the configuration file to use. The default is <code>.snooper.yaml</code> in the
-current directory.</p></dd>
-<dt><var>command_line</var></dt><dd><p>One or more <var>command_line</var>s to execute when source files change. Overides any
-commands specified in the configuration file.</p></dd>
-</dl>
+<ul>
+<li><p><code>-c</code>, <code>--config</code> <var>configfile</var>:
+Specify the configuration file to use. The default is <code>.snooper.yaml</code> in the
+current directory, or any of it's parent directories.</p></li>
+<li><p><code>-p</code>, <code>--poll</code>
+Force polling. Use this if there seem to be bugs in your builtin OS file
+notification system. <em>Warning</em>: using this option may slow down snooper's
+reaction to file changes and increase resource useage.</p></li>
+<li><p><var>command_line</var>:
+One or more <var>command_line</var>s to execute when source files change. Overides any
+commands specified in the configuration file.</p></li>
+</ul>
 
 
 <h2 id="EXAMPLES">EXAMPLES</h2>
@@ -142,7 +148,7 @@ when files change.</p>
 
   <ol class='man-decor man-foot man foot'>
     <li class='tl'></li>
-    <li class='tc'>June 2013</li>
+    <li class='tc'>October 2013</li>
     <li class='tr'>snooper(1)</li>
   </ol>
 

@@ -105,7 +105,7 @@ may also be given a single value.</p>
 
 <dl>
 <dt><code>base_path:</code> <var>directory</var></dt><dd><p>Specifies the <var>directory</var> that <code>snooper</code> should base all relative paths from.
-This is also the working directory that commands will inherit.</p></dd>
+This is also the working directory that commands and hooks will inherit.</p></dd>
 <dt><code>command:</code> <var>command_string</var></dt><dd><p>Specifies the command string to execute when a file change is detected.</p></dd>
 </dl>
 
@@ -120,6 +120,9 @@ watch <code>base_path</code>.</p></dd>
 changes. These should be in a format understood by <span class="man-ref">ruby<span class="s">(1)</span></span>'s Regex.new
 method. If none are given then all changes in watched directories trigger
 testing.</p>
+
+<p>A file change satisfies these filters if the file path matches any of the
+regular expressions in <code>filters</code> and none of those in <code>ignored</code>.</p>
 
 <p><em>Note</em>: as these are regular expressions <code>\.c</code> will match both
 <code>foo.c</code> and <code>bar.cfg</code>, <code>\.c$</code> will only match <code>.c</code> files.</p></dd>
@@ -162,7 +165,7 @@ as the global <code>command:</code> key.</p></li>
 
   <ol class='man-decor man-foot man foot'>
     <li class='tl'></li>
-    <li class='tc'>July 2013</li>
+    <li class='tc'>October 2013</li>
     <li class='tr'>snooper-config(7)</li>
   </ol>
 
