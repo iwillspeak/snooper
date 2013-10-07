@@ -193,9 +193,10 @@ module Snooper
         @listener = Listen.to(*@config.paths, params) do |*args|
           self.on_change *args
         end
-
-        @listener.start
-        sleep
+        
+        t = @listener.start
+        Signal.trap("INT", "DEFAULT")
+        t.join
       end
     end
 
