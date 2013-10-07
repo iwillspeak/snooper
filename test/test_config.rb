@@ -60,17 +60,19 @@ class TestConfig < Test::Unit::TestCase
 
     # check polling is stored correctly
     c = Snooper::Config.new nil, 'cd', force_poll: false
-    assert c.force_poll == false
+    assert c.force_poll == nil
     c = Snooper::Config.new nil, 'cd', force_poll: true
-    assert c.force_poll == true
+    assert c.force_poll == 1.0
 
     # check that polling is cast to bool
     c = Snooper::Config.new nil, 'cd', force_poll: nil
-    assert c.force_poll == false
-    c = Snooper::Config.new nil, 'cd', force_poll: 0
-    assert c.force_poll == true # pretty much everything is true
+    assert c.force_poll == nil
+    c = Snooper::Config.new nil, 'cd', force_poll: 2.5
+    assert c.force_poll ==  2.5
+    c = Snooper::Config.new nil, 'cd', force_poll: -2.5
+    assert c.force_poll ==  1.0
     c = Snooper::Config.new nil, 'cd', force_poll: 'helloworld'
-    assert c.force_poll == true # yay for Ruby truthness :-)
+    assert c.force_poll == 1.0
 
     # test the default values
     c = Snooper::Config.new nil, 'cd'
@@ -78,7 +80,7 @@ class TestConfig < Test::Unit::TestCase
     assert c.hooks == []
     assert c.filters == []
     assert c.ignored == []
-    assert c.force_poll == false
+    assert c.force_poll == nil
   end
 
   def test_create_snoop_migrations

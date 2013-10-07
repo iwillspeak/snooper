@@ -82,7 +82,17 @@ module Snooper
       @hooks = (options[:hooks] && create_hooks(options[:hooks])) || []
 
       # Force poll if it is stored in the options file.
-      @force_poll = !!options[:force_poll]
+      case options[:force_poll]
+        when true
+        @force_poll = 1.0
+        
+        when false, nil
+        @force_poll = nil
+
+        else
+        @force_poll = options[:force_poll].to_f
+        @force_poll = 1.0 if @force_poll <= 0.0
+      end
     end
 
     ##
