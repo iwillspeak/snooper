@@ -180,8 +180,6 @@ module Snooper
         # Force a change to start with
         run_command
         
-        callback_helper = Proc.new { |*args| self.on_change *args }
-        
         params = {
           latency: 0.5,
           filter: @config.filters, ignore: @config.ignored,
@@ -192,10 +190,12 @@ module Snooper
           params[:force_poll] = true
         end
 
-        @listener = Listen.to(*@config.paths, params)
-        @listener.change &callback_helper
+        @listener = Listen.to(*@config.paths, params) do |*args|
+          self.on_change *args
+        end
 
-        @listener.start!
+        @listener.start
+        sleep
       end
     end
 
