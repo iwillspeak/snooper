@@ -50,7 +50,7 @@ END
           exit
         end
         
-        parser.on("-p", "--poll [frequency]", "Force filesystem polling.") do |freq|
+        parser.on("-p", "--poll [FREQUENCY]", "Force filesystem polling.") do |freq|
           options.poll = freq || true
         end
 

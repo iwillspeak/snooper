@@ -129,13 +129,15 @@ regular expressions in <code>filters</code> and none of those in <code>ignored</
 </dl>
 
 
-<p>Boolean Options</p>
+<p>Polling</p>
 
 <ul>
-<li><code>force_poll</code>: <var>force</var>
- Specifies if the polling fallback mode should be used. This mode can be slower and more buggy. Set this option to true if you want to use polling but don't want to have to specify it on the command line. Defaults to false.</li>
+<li><code>force_poll</code>: <var>poll</var>
+ Specifies if the polling fallback mode should be used and controls the polling frequency in seconds. Include this option if you want to use polling but don't want to have to specify it on the command line. Defaults to false.</li>
 </ul>
 
+
+<p> This mode can be slower and more buggy but is useful for working around bugs in third party applications that hide filesystem events. Known to be required when you are snooping on VirtualBox shared folders, or in Dropbox folders.</p>
 
 <p><em>Note</em>: This option can be overridden from the command line with the <code>--poll</code> option.</p>
 
