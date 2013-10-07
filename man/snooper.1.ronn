@@ -22,10 +22,10 @@ subsection of a project that has it's own tests.
    Specify the configuration file to use. The default is `.snooper.yaml` in the
    current directory, or any of it's parent directories.
 
- * `-p`, `--poll`
-   Force polling. Use this if there seem to be bugs in your builtin OS file
+ * `-p`, `--poll` [<frequency>]:
+   Force polling, optionally setting the frequency. Polling frequency is measured in seconds. Use this if there seem to be bugs in your builtin OS file
    notification system. _Warning_: using this option may slow down snooper's
-   reaction to file changes and increase resource useage.
+   reaction to file changes and increase resource usage.
 
  * <command_line>:
    One or more <command_line>s to execute when source files change. Overides any

@@ -35,7 +35,7 @@ end
 config.command = options.command if options.command
 
 # Force polling if command line flag is set
-config.force_poll |= options.poll
+config.force_poll = options.poll if options.poll
 
 # Run the tests, pusing the target directory
 test_loop config

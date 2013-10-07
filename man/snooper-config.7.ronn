@@ -41,10 +41,12 @@ String Array options
    _Note_: as these are regular expressions `\.c` will match both
    `foo.c` and `bar.cfg`, `\.c$` will only match `.c` files.
 
-Boolean Options
+Polling
 
- * `force_poll`: <force>
-	Specifies if the polling fallback mode should be used. This mode can be slower and more buggy. Set this option to true if you want to use polling but don't want to have to specify it on the command line. Defaults to false.
+ * `force_poll`: <poll>
+	Specifies if the polling fallback mode should be used and controls the polling frequency in seconds. Include this option if you want to use polling but don't want to have to specify it on the command line. Defaults to false.
+
+ This mode can be slower and more buggy but is useful for working around bugs in third party applications that hide filesystem events. Known to be required when you are snooping on VirtualBox shared folders, or in Dropbox folders. 
 
 _Note_: This option can be overridden from the command line with the `--poll` option.
 
