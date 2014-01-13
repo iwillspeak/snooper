@@ -8,7 +8,7 @@ module Snooper
   ##
   # Public: File Change Hook
   #
-  # Hooks represent a command that is fired when a given file changes. 
+  # Hooks represent a command that is fired when a given file changes.
   class Hook
 
     ##
