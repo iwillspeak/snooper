@@ -182,7 +182,7 @@ module Snooper
         
         params = {
           latency: 0.5,
-          filter: @config.filters, ignore: @config.ignored,
+          only: @config.filters, ignore: @config.ignored,
         }
 
         if @config.force_poll
