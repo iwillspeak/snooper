@@ -105,7 +105,7 @@ may also be given a single value.</p>
 
 <dl>
 <dt><code>base_path:</code> <var>directory</var></dt><dd><p>Specifies the <var>directory</var> that <code>snooper</code> should base all relative paths from.
-This is also the working directory that commands will inherit.</p></dd>
+This is also the working directory that commands and hooks will inherit.</p></dd>
 <dt><code>command:</code> <var>command_string</var></dt><dd><p>Specifies the command string to execute when a file change is detected.</p></dd>
 </dl>
 
@@ -121,9 +121,49 @@ changes. These should be in a format understood by <span class="man-ref">ruby<sp
 method. If none are given then all changes in watched directories trigger
 testing.</p>
 
+<p>A file change satisfies these filters if the file path matches any of the
+regular expressions in <code>filters</code> and none of those in <code>ignored</code>.</p>
+
 <p><em>Note</em>: as these are regular expressions <code>\.c</code> will match both
 <code>foo.c</code> and <code>bar.cfg</code>, <code>\.c$</code> will only match <code>.c</code> files.</p></dd>
 </dl>
+
+
+<p>Polling</p>
+
+<ul>
+<li><code>force_poll</code>: <var>poll</var>
+ Specifies if the polling fallback mode should be used and controls the polling frequency in seconds. Include this option if you want to use polling but don't want to have to specify it on the command line. Defaults to false.</li>
+</ul>
+
+
+<p> This mode can be slower and more buggy but is useful for working around bugs in third party applications that hide filesystem events. Known to be required when you are snooping on VirtualBox shared folders, or in Dropbox folders.</p>
+
+<p><em>Note</em>: This option can be overridden from the command line with the <code>--poll</code> option.</p>
+
+<p>Hooks</p>
+
+<p>Hooks are useful to pefrom special commads upon a subset of the file-change
+events. Each hook is run a single time if any of the filepaths that satisfy
+<code>filters:</code> and <code>ignored:</code> aslo match the <code>pattern:</code> of the filter.</p>
+
+<ul>
+<li><p><code>hooks:</code> <var>hook_list</var>
+ Specifies a list of hooks, where each hook represents a task that should
+ be carried out upon a subset of the triggering events. The hooks key should
+ contain a list of mappings. Each mappign should have the two following keys:</p>
+
+<ul>
+<li><p><code>pattern:</code> <var>regexp</var>
+The pattern to run the hook on. This should be of the same format as
+<code>filters:</code> and <code>ignored:</code>. Note that hooks can only match a subset of all
+file changes as controlled by <code>filters:</code> and <code>ignored:</code>.</p></li>
+<li><p><code>command:</code> <var>command_string</var>
+A command to be run when the hook is triggered. This is of the same format
+as the global <code>command:</code> key.</p></li>
+</ul>
+</li>
+</ul>
 
 
 <h2 id="SEE-ALSO">SEE ALSO</h2>
@@ -137,7 +177,7 @@ testing.</p>
 
   <ol class='man-decor man-foot man foot'>
     <li class='tl'></li>
-    <li class='tc'>June 2013</li>
+    <li class='tc'>May 2014</li>
     <li class='tr'>snooper-config(7)</li>
   </ol>
 

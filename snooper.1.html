@@ -110,7 +110,10 @@ subsection of a project that has it's own tests.</p>
 
 <dl>
 <dt><code>-c</code>, <code>--config</code> <var>configfile</var></dt><dd><p>Specify the configuration file to use. The default is <code>.snooper.yaml</code> in the
-current directory.</p></dd>
+current directory, or any of it's parent directories.</p></dd>
+<dt><code>-p</code>, <code>--poll</code> [<var>frequency</var>]</dt><dd><p>Force polling, optionally setting the frequency. Polling frequency is measured in seconds. Use this if there seem to be bugs in your builtin OS file
+notification system. <em>Warning</em>: using this option may slow down snooper's
+reaction to file changes and increase resource usage.</p></dd>
 <dt><var>command_line</var></dt><dd><p>One or more <var>command_line</var>s to execute when source files change. Overides any
 commands specified in the configuration file.</p></dd>
 </dl>
@@ -142,7 +145,7 @@ when files change.</p>
 
   <ol class='man-decor man-foot man foot'>
     <li class='tl'></li>
-    <li class='tc'>June 2013</li>
+    <li class='tc'>May 2014</li>
     <li class='tr'>snooper(1)</li>
   </ol>
 
