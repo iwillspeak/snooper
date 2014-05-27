@@ -101,7 +101,7 @@ may also be given a single value.</p>
 
 <h2 id="OPTIONS">OPTIONS</h2>
 
-<p>String options</p>
+<h3 id="String-options">String options</h3>
 
 <dl>
 <dt><code>base_path:</code> <var>directory</var></dt><dd><p>Specifies the <var>directory</var> that <code>snooper</code> should base all relative paths from.
@@ -110,7 +110,7 @@ This is also the working directory that commands and hooks will inherit.</p></dd
 </dl>
 
 
-<p>String Array options</p>
+<h3 id="String-Array-options">String Array options</h3>
 
 <dl>
 <dt><code>paths:</code> <var>directories</var></dt><dd><p>Specifies a list of <var>directories</var> to watch. Directories can be either
@@ -129,41 +129,37 @@ regular expressions in <code>filters</code> and none of those in <code>ignored</
 </dl>
 
 
-<p>Polling</p>
+<h3 id="Polling">Polling</h3>
 
-<ul>
-<li><code>force_poll</code>: <var>poll</var>
- Specifies if the polling fallback mode should be used and controls the polling frequency in seconds. Include this option if you want to use polling but don't want to have to specify it on the command line. Defaults to false.</li>
-</ul>
+<dl>
+<dt><code>force_poll:</code> <var>poll</var></dt><dd><p>  Specifies if the polling fallback mode should be used and controls the polling frequency in seconds. Include this option if you want to use polling but don't want to have to specify it on the command line. Defaults to false.</p>
+
+<p>This mode can be slower and more buggy but is useful for working around bugs in third party applications that hide filesystem events. Known to be required when you are snooping on VirtualBox shared folders, or in Dropbox folders.</p>
+
+<p><em>Note</em>: This option can be overridden from the command line with the <code>--poll</code> option.</p></dd>
+</dl>
 
 
-<p> This mode can be slower and more buggy but is useful for working around bugs in third party applications that hide filesystem events. Known to be required when you are snooping on VirtualBox shared folders, or in Dropbox folders.</p>
-
-<p><em>Note</em>: This option can be overridden from the command line with the <code>--poll</code> option.</p>
-
-<p>Hooks</p>
+<h3 id="Hooks">Hooks</h3>
 
 <p>Hooks are useful to pefrom special commads upon a subset of the file-change
 events. Each hook is run a single time if any of the filepaths that satisfy
 <code>filters:</code> and <code>ignored:</code> aslo match the <code>pattern:</code> of the filter.</p>
 
-<ul>
-<li><p><code>hooks:</code> <var>hook_list</var>
- Specifies a list of hooks, where each hook represents a task that should
- be carried out upon a subset of the triggering events. The hooks key should
- contain a list of mappings. Each mappign should have the two following keys:</p>
+<dl>
+<dt><code>hooks:</code> <var>hook_list</var></dt><dd><p>Specifies a list of hooks, where each hook represents a task that should
+be carried out upon a subset of the triggering events. The hooks key should
+contain a list of mappings. Each mappign should have the two following keys:</p>
 
-<ul>
-<li><p><code>pattern:</code> <var>regexp</var>
-The pattern to run the hook on. This should be of the same format as
+<dl>
+<dt><code>pattern:</code> <var>regexp</var></dt><dd><p>The pattern to run the hook on. This should be of the same format as
 <code>filters:</code> and <code>ignored:</code>. Note that hooks can only match a subset of all
-file changes as controlled by <code>filters:</code> and <code>ignored:</code>.</p></li>
-<li><p><code>command:</code> <var>command_string</var>
-A command to be run when the hook is triggered. This is of the same format
-as the global <code>command:</code> key.</p></li>
-</ul>
-</li>
-</ul>
+file changes as controlled by <code>filters:</code> and <code>ignored:</code>.</p></dd>
+<dt><code>command:</code> <var>command_string</var></dt><dd><p>A command to be run when the hook is triggered. This is of the same format
+as the global <code>command:</code> key.</p></dd>
+</dl>
+</dd>
+</dl>
 
 
 <h2 id="SEE-ALSO">SEE ALSO</h2>
