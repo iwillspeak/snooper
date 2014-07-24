@@ -1,6 +1,8 @@
 $:.unshift File.expand_path('../lib/', __FILE__)
 
 require 'snooper/version'
+require 'rbconfig'
+HOST_OS ||= RbConfig::CONFIG['target_os']
 
 Gem::Specification.new do |s|
   s.name        = 'snooper'
@@ -24,6 +26,10 @@ ENDESC
   # Gem dependencies
   s.add_runtime_dependency "colored", [">= 1.2"]
   s.add_runtime_dependency "listen", ["~> 2.7"]
-  s.add_runtime_dependency "ruby-terminfo", [">= 0.1"]
+  if HOST_OS =~ /mswin|mingw|cygwin/i
+    s.add_runtime_dependency "wdm", ">= 0.1.0"
+  else
+    s.add_runtime_dependency "ruby-terminfo", [">= 0.1"]
+  end
   s.add_development_dependency "ronn", [">= 0.7.3"]
 end
