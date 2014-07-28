@@ -1,7 +1,7 @@
 #! /usr/bin/env ruby
 
 # Author::    Will Speak  (@willspeak)
-# Copyright:: Copyright (c) 2013 Will Speak
+# Copyright:: Copyright (c) 2013, 2014 Will Speak
 # License::   Snoop is open source! See LICENCE.md for more details.
 
 require 'snooper'
@@ -22,13 +22,27 @@ rescue Interrupt
   puts "Testing over, time for a coffee...".yellow
 end
 
+##
+# Internal: Print out an error AND exit
+#
+# error - The error string to print.
+#
+# returns nothing.
+def fatal_error(error)
+  $stderr.puts "#{$0}: error: #{error}"
+  exit 1
+end
+
 options = Snooper::Options.parse ARGV
+
+if options.config_path.nil?
+  fatal_error "couldn't find a config file. Did you miss a `--config=`?"
+end
 
 begin
   config = Snooper::Config.load options.config_path
 rescue Exception => error
-  $stdout.puts "#{$0}: error: couldn't load '#{options.config_path}' (#{error})"
-  exit 1
+  fatal_error "couldn't load '#{options.config_path}' (#{error})"
 end
 
 # Override the command if one was specified
