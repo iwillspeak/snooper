@@ -24,6 +24,8 @@ task :docs do
   `ronn --style=dark,toc man/*.ronn`
 end
 
+# TODO: Need to move DocTask from Prattle to gem. Then require and use that here
+
 # Clean up : rake clean
 desc "Remove any built gems fom the directory, and any compiled docs"
 task :clean do
