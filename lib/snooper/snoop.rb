@@ -147,17 +147,27 @@ module Snooper
       if @config.file_path
         dir = File.dirname @config.file_path
         filter = %r{#{File.basename @config.file_path}$}
-        Listen.to dir, relative_paths: false, filter: filter do |*args|
+        @cfg_listener = Listen.to dir do |*args|
           next unless args.reduce(&:+).include? @config.file_path
-          puts statusbar "Re-loading Config File...", &:yellow
-          @listener.stop if @listener
+          if @listener
+            puts statusbar "Re-loading Config File...", &:yellow
+            @listener.stop
+            @listener = nil
+          end
         end
+        @cfg_listener.start
       end
+
+      # on C-c tell all listeners to stop
+      Signal.trap "INT", "DEFAULT"
 
       # loop forever listening, each time the above block causes the listener
       # to stop it will re-start listening with the new config.
       while true
         do_listening
+        while @listener != nil
+          sleep(1.0)
+        end
         @config.reload
       end
     end
@@ -179,7 +189,7 @@ module Snooper
 
         # Force a change to start with
         run_command
-        
+
         params = {
           latency: 0.5,
           only: @config.filters, ignore: @config.ignored,
@@ -194,9 +204,7 @@ module Snooper
           self.on_change *args
         end
         
-        t = @listener.start
-        Signal.trap("INT", "DEFAULT")
-        t.join
+        @listener.start
       end
     end
 
