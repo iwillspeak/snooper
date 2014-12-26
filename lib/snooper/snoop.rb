@@ -192,8 +192,10 @@ module Snooper
 
         params = {
           latency: 0.5,
-          only: @config.filters, ignore: @config.ignored,
         }
+
+        params[:only] = Regexp.new @config.filters.join "|" unless @config.filters.empty?
+        params[:ignore] = Regexp.new @config.ignored "|" unless @config.ignored.empty?
 
         if @config.force_poll
           params[:latency] = @config.force_poll

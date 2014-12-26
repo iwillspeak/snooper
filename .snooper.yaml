@@ -1,4 +1,6 @@
 base_path: .
 command: ruby -I test -I lib test/test_suite.rb
-paths: [lib, test, bin]
-filters: \.rb$
+paths: [bin, test, lib]
+filters:
+ - \.rb$
+ - snooper$
