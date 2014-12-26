@@ -144,6 +144,8 @@ module Snooper
     #
     # Returns the result of the listener
     def run
+      evq = Queue.new
+
       if @config.file_path
         dir = File.dirname @config.file_path
         filter = %r{#{File.basename @config.file_path}$}
@@ -152,7 +154,7 @@ module Snooper
           if @listener
             puts statusbar "Re-loading Config File...", &:yellow
             @listener.stop
-            @listener = nil
+            evq.push true
           end
         end
         @cfg_listener.start
@@ -165,9 +167,7 @@ module Snooper
       # to stop it will re-start listening with the new config.
       while true
         do_listening
-        while @listener != nil
-          sleep(1.0)
-        end
+        break unless evq.pop
         @config.reload
       end
     end
