@@ -1,0 +1,53 @@
+---
+## Snooper Configuration File
+
+## Base directory
+#
+# relative to this configuration file. All paths are relative to this directory.
+base_path: .
+
+## Command to execute
+#
+# When changes are noticed. This command is run in `base_path:`.
+command: >
+ echo Edit '`command:`' in .snooper.yaml to change the command
+ that is run.
+
+## Paths to Watch
+#
+# Resticts the paths in which changes are watched for. Add just the
+# places you want to monitor here to prevent temporary files or build
+# files triggering re-tests if you don't want them.
+#paths: [bin, test, lib]
+
+## Filters
+#
+# Restricts the types of files that trigger a re-test. If a file path
+# matches any of these regular expressions then the command is
+# executed.
+filters:
+# - \.rb$    # Ruby files
+# - \.h$     # C/C++ header files
+# - \.cpp$   # C++ files
+# - \.c$     # C files
+# - \.py$    # Python files
+
+## Force Polling
+#
+# Use this setting to overide the normal file system watcher and use
+# the polling mode. This may be required for some file system types or
+# when working with some kinds of shared folders.
+# force_poll: true
+
+## Hooks
+#
+# Hooks allow special commands to be performed on a sub-set of the
+# changes. They can be used to re-build specific files or run
+# specialised test cases.
+hooks:
+ - pattern: \.snooper\.yaml$
+   command: >
+    echo The snooper config file was edited!. Look at the '`hooks:`'
+    section in the snooper config file to see how to run command on a
+    subset of changes like this one is.
+...

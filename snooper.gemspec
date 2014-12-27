@@ -21,7 +21,7 @@ ENDESC
   s.authors     = ["Will Speak"]
   s.email       = 'will@willspeak.me'
   # Gem contents
-  s.files       = Dir.glob("{lib,bin,man}/**/*") + %w[LICENCE.md README.md]
+  s.files       = Dir.glob("{lib,bin,man,data}/**/*") + %w[LICENCE.md README.md]
   s.executables << 'snooper'
   # Gem dependencies
   s.add_runtime_dependency "colored", [">= 1.2"]

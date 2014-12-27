@@ -35,6 +35,22 @@ end
 
 options = Snooper::Options.parse ARGV
 
+if options.command == 'init'
+  require 'fileutils'
+
+  target = File.join Dir.pwd, ".snooper.yaml"
+  if File.exists? target
+    fatal_error "Configuration file '#{target}' already exists"
+  end
+
+  source = File.expand_path "../../data/_snooper.yaml", __FILE__
+
+  puts "Creating Snooper configuration file '#{target}'"
+  FileUtils::Verbose::cp source, target
+
+  exit 0
+end
+
 if options.config_path.nil?
   fatal_error "couldn't find a config file. Did you miss a `--config=`?"
 end

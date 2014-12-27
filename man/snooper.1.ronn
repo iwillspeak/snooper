@@ -3,7 +3,8 @@ snooper(1) -- Spy on Tests
 
 ## SYNOPSIS
 
-`snooper` <options> [<command_line>]*
+`snooper` <options> [<command_line>]*  
+`snooper` init
 
 ## DESCRIPTION
 
@@ -23,13 +24,20 @@ subsection of a project that has it's own tests.
    current directory, or any of it's parent directories.
 
  * `-p`, `--poll` [<frequency>]:
-   Force polling, optionally setting the frequency. Polling frequency is measured in seconds. Use this if there seem to be bugs in your builtin OS file
-   notification system. _Warning_: using this option may slow down snooper's
-   reaction to file changes and increase resource usage.
+   Force polling, optionally setting the frequency. Polling frequency
+   is measured in seconds. Use this if there seem to be bugs in your
+   builtin OS file notification system. _Warning_: using this option
+   may slow down snooper's reaction to file changes and increase
+   resource usage.
 
  * <command_line>:
    One or more <command_line>s to execute when source files change. Overides any
    commands specified in the configuration file.
+
+ * `init`:
+   Create a new `.snooper.yaml` configuration file in the current
+   working directory. Use this to quickly add snooper support to a
+   project.
 
 ## EXAMPLES
 
@@ -53,4 +61,3 @@ snooper-config(7)
 ## AUTHORS
 
 Will Speak (@willspeak)
-
