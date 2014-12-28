@@ -1,8 +1,11 @@
 $:.unshift File.expand_path('../lib/', __FILE__)
 
 require 'rake/testtask'
+require 'rake/clean'
+require 'snooper/version'
 
 # tests : rake test
+desc "Run unit tests"
 Rake::TestTask.new do |t|
   t.libs << "test"
 end
@@ -10,31 +13,37 @@ end
 desc "Default task"
 task :default => [:build]
 
-# build gem : rake build
-desc "Build the gem"
-task :build => [:docs] do
-  puts "Building gem"
-  `gem build snooper.gemspec`
-end
-
 # Build the docs : rake docs
-desc "Build the manpages"
-task :docs do
-  puts "Compiling manpages"
-  `ronn --style=dark,toc man/*.ronn`
+DOC_SRCS = FileList['man/*.ronn']
+DOCS = DOC_SRCS.ext("") + DOC_SRCS.ext("html")
+
+DOCS.each { |f| CLEAN << f }
+# Rule to convert ronn formatted manpages to compiled ones
+rule '.html' => ['.ronn'] do |t|
+  `ronn --style=dark,toc --html #{t.source}`
 end
 
-# TODO: Need to move DocTask from Prattle to gem. Then require and use that here
+# Rule to convert ronn formatted manpages to compiled ones
+rule /\.[0-9]$/ => [ proc { |t| t + '.ronn' } ] do |t|
+  `ronn --roff #{t.source}`
+end
+
+desc "Build the manpages"
+task :docs => DOCS
+
+# build gem : rake build
+gemfile = "snooper-#{Snooper::VERSION}.gem"
+gem_srcs = FileList['lib/**.rb','data/**','bin/**']
+
+desc "Build everything"
+task :build => DOCS + [ gemfile ]
+
+desc "Build #{gemfile}"
+file gemfile => gem_srcs + [ 'snooper.gemspec' ] do
+  sh %{gem build snooper.gemspec}
+end
 
 # Clean up : rake clean
-desc "Remove any built gems fom the directory, and any compiled docs"
-task :clean do
-  puts "removing built gems"
-  Dir.glob("*.gem").each do |f|
-    File.delete f
-  end
-  puts "removing documentation"
-  Dir.glob("man/*.{html,[0-9]}").each do |f|
-    File.delete f
-  end
+Dir.glob("*.gem").each do |f|
+  CLOBBER << f
 end
