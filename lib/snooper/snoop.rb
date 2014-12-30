@@ -194,8 +194,8 @@ module Snooper
           latency: 0.5,
         }
 
-        params[:only] = Regexp.new @config.filters.join "|" unless @config.filters.empty?
-        params[:ignore] = Regexp.new @config.ignored "|" unless @config.ignored.empty?
+        params[:only] = Regexp.new(@config.filters.join("|")) unless @config.filters.empty?
+        params[:ignore] = Regexp.new(@config.ignored.join("|")) unless @config.ignored.empty?
 
         if @config.force_poll
           params[:latency] = @config.force_poll
