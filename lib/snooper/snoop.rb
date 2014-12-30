@@ -16,7 +16,6 @@ module Snooper
   
     require 'listen'
     require 'colored'
-    require 'terminfo'
     
     ##
     # Public: Create a new source code spy
@@ -117,6 +116,21 @@ module Snooper
       res
     end
 
+    @terminal_width = nil
+
+    ## Internal: Get the Terminal Width
+    #
+    # Returns the width of the terminal, if one is connected, in characters
+    def term_width
+      return @@terminal_width unless @terminal_width == nil
+      begin
+        require 'terminfo'
+        @@terminal_width = TermInfo.screen_width - 1
+      rescue
+        @@terminal_width = 79
+      end
+    end
+
     ##
     # Internal: Prettify a status line
     #
@@ -131,7 +145,7 @@ module Snooper
     # Returns the prettified String.
     def statusbar(message, time=nil)
       message << " (#{time.round(3)}s)" if time
-      message = message.to_s.center TermInfo.screen_width - 1
+      message = message.to_s.center term_width
       block_given? ? yield(message) : message
     end
     
