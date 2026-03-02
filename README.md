@@ -8,7 +8,7 @@ Snooper is a lightweight test automation tool, it monitors files and folders whi
 $ snooper <--config CONFIG | -h> <command>
 ```
 
-See [snooper(1)](http://iwillspeak.github.com/snooper/snooper.1.html) for more information.
+See [snooper(1)](http://iwillspeak.github.io/snooper/snooper.1.html) for more information.
 
 ## Options
 
